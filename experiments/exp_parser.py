@@ -39,7 +39,7 @@ def parse_df(df):
 
     # Number of minutes to ignore in the beginning
     ignore_mins = total_time.seconds / 60 / 4
-    print(f"Ignoring {ignore_mins:4.2f} minutes")
+    # print(f"Ignoring {ignore_mins:4.2f} minutes")
     ss_df = df.loc[df['client_start_time_dt'] > (df['client_start_time_dt'].min() + timedelta(minutes=ignore_mins)), :]
 
     # Response Time Statistics
