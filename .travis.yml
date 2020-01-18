@@ -6,9 +6,9 @@ jobs:
     - stage: Build and Push Docker Images
       script:
         # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - bash jupyter_docker/build.sh
+        - cd jupyter_docker && bash jupyter_docker/build.sh && cd ..
         # run tests
-        - bash jupyter_docker/runtest.sh
+        - cd jupyter_docker && bash jupyter_docker/runtest.sh && cd ..
         # push if tests where successful (later)
     - stage: deploy
       language: python
