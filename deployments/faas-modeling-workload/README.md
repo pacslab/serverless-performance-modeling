@@ -1,5 +1,6 @@
 # Workload for Serverless Performance Modeling
-The python function from [faas_measure](https://github.com/liangw89/faas_measure)
+
+The python function from [faas_measure](https://github.com/liangw89/faas_measure) with minor modifications.
 
 
 ## Changes from the original version
