@@ -1,5 +1,5 @@
 IMAGE_NAME=$(cat .dockername)
-TARGET_PORT=8890
+TARGET_PORT=8888
 cd ..
 docker run -it --rm \
     -p $TARGET_PORT:8888 \

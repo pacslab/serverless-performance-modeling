@@ -23,7 +23,7 @@ use the following to run the Jupyter Lab:
 
 ```sh
 IMAGE_NAME=$(cat .dockername)
-TARGET_PORT=8890
+TARGET_PORT=8888
 # The folder you want to be mounted into the container:
 cd ..
 docker run -it --rm \
