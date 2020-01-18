@@ -4,7 +4,7 @@ import os
 from pacs_util import *
 from exp_parser import *
 
-import perfmodel
+from pacsltk import perfmodel
 
 import matplotlib.pyplot as plt
 

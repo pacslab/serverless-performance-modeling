@@ -126,3 +126,7 @@ dmypy.json
 .vscode
 
 figs
+pacsltk-tmp.zip
+tmp.zip
+.secret-env
+res-*.csv
