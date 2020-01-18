@@ -18,6 +18,8 @@ jobs:
         - pip install -r requirements.txt
         - pip install .
         - cd ..
+      script:
+        - echo "Nothing to do for now, tests done in docker"
       before_deploy:
         # convert README file
         - source .travis/build.sh
