@@ -74,7 +74,7 @@ for csv_filename in similar_csvs:
 
     # Get Model Parameters
     props, props2 = perfmodel.get_sls_warm_count_dist(
-        mean_reqs_per_sec, (1000 / warm_rt), idle_mins_before_kill * 60)
+        mean_reqs_per_sec, (warm_rt / 1000), (cold_rt / 1000), idle_mins_before_kill * 60)
 
     exp_data = {
         'ArrivalRate': mean_reqs_per_sec,
@@ -118,9 +118,9 @@ exp_df = all_df.loc[:, exp_cols].T
 # Model Predictions
 params = {
     "arrival_rate": np.arange(exp_df.loc[:, 'ArrivalRate'].min() / 2, exp_df.loc[:, 'ArrivalRate'].max() + 1, 0.1),
-    "warm_service_rate": 1000 / exp_df.loc[:, 'ServiceTimeWarm'].mean(),
-    # exp_df.loc[:,'IdleMinutesBeforeKill'].mean() * 60,
-    "idle_time_before_kill": 10 * 60,
+    "warm_service_time": exp_df.loc[:, 'ServiceTimeWarm'].mean() / 1000,
+    "cold_service_time": exp_df.loc[:, 'ServiceTimeCold'].mean() / 1000,
+    "idle_time_before_kill": idle_mins_before_kill * 60,
 }
 df = pd.DataFrame(data=params)
 df = pd.concat([df, df.apply(analyze_sls, axis=1)], axis=1)

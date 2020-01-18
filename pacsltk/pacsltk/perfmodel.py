@@ -44,7 +44,9 @@ def print_props(props):
     print("------------------\n")
 
 
-def get_sls_warm_count_dist(arrival_rate, warm_service_rate, idle_time_before_kill):
+def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, idle_time_before_kill):
+    warm_service_rate = 1 / warm_service_time
+    cold_service_rate = 1 / cold_service_time
     rho = arrival_rate / warm_service_rate
 
     server_max = 0
@@ -93,10 +95,10 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_rate, idle_time_before_ki
         else:
             kill_rate += 0
 
-        # TODO: consider cold starts as running containers
-
         # Average number of warm containers serving the requests
-        running_count = arrival_rate * (1 - prob_block) / warm_service_rate
+        running_count_warm = arrival_rate * (1 - prob_block) * warm_service_time
+        running_count_cold = arrival_rate * prob_block * cold_service_time
+        running_count = running_count_warm + running_count_cold
 
         # Record properties for each state in CTMC
         server_counts.append(server_count)
