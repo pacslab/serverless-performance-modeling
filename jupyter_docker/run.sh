@@ -1,3 +1,5 @@
+#! /bin/bash
+
 IMAGE_NAME=$(cat .dockername)
 TARGET_PORT=8888
 cd ..

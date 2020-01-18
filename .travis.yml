@@ -1,0 +1,30 @@
+sudo: required
+services:
+  - docker
+jobs:
+  include:
+    - stage: Build and Push Docker Images
+      script:
+        # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - bash jupyter_docker/build.sh
+        # run tests
+        - bash jupyter_docker/runtest.sh
+        # push if tests where successful (later)
+    - stage: deploy
+      language: python
+      python: 3.6
+      install:
+        - cd pacsltk
+        - pip install -r requirements.txt
+        - pip install .
+        - cd ..
+      before_deploy:
+        # convert README file
+        - source .travis/build.sh
+      # deploy:
+      #   provider: pypi
+      #   user: nima_mahmoudi
+      #   distributions: sdist bdist_wheel
+      #   skip_existing: true
+      #   skip_cleanup: true
+      #   # To add password, do the following: travis encrypt your-api-token --add deploy.password --com
