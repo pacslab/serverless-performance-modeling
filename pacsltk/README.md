@@ -1,7 +1,8 @@
 # PACSLTK (PACS Lambda ToolKit)
 
 Developed in PACS Lab to ease the process of deployment and testing of our benchmarking workload
-to AWS Lambda. To see how you can use pacsltk, check out the [example folder](./example/).
+to AWS Lambda. To see how you can use pacsltk, check out the [deployments folder](../deployments/)
+and the [experiments folder](../experiments/).
 
 ## Installation
 
