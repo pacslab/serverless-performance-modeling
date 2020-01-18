@@ -131,6 +131,7 @@ tmp.zip
 .secret-env
 res-*.csv
 
+# For jupyter lab
 .jupyter
 .config
 .local
