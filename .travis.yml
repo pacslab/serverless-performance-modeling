@@ -8,7 +8,7 @@ jobs:
         # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - cd jupyter_docker && bash build.sh && cd ..
         # run tests
-        - cd jupyter_docker && bash runtest.sh && cd ..
+        - cd jupyter_docker && DOCKER_USER="root" bash runtest.sh && cd ..
         # push if tests where successful (later)
     - stage: deploy
       language: python
