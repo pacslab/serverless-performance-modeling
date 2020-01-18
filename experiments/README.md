@@ -9,7 +9,7 @@ of serverless computing platforms.
 # In the root of the repository:
 
 # Create a virtual environment
-virtualenv -p python3.7 venv
+virtualenv -p python3.6 venv
 
 # Activate the virtual environment
 source venv/bin/activate
