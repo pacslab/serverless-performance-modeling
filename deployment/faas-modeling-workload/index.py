@@ -70,8 +70,7 @@ def handler(event, context):
             print('error: ', e)
             # import traceback
             # traceback.print_exc(file=sys.stdout)
-        # collect all results
-        # basic_info[k] = str(res)
+            
         basic_info[k] = res
 
     tm_ed = time.time() * 1000
@@ -81,9 +80,6 @@ def handler(event, context):
     basic_info['start_time'] = tm_st
     basic_info['end_time'] = tm_ed
     basic_info['elapsed_time'] = (tm_ed - tm_st)
-
-    # res = '#'.join(basic_info + timing_info)
-    # return res
 
     return json.dumps(basic_info)
 

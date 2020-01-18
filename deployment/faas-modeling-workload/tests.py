@@ -49,10 +49,7 @@ def ioload(size, cnt):
     buf = err.split("\n")[-2].split(",")
     t, s = buf[-2], buf[-1]
     t = t.split(" ")[1]
-    # s = s.split(" ")[1]
 
-
-    # return "%s,%s" % (t, s)
     return {
         'time': t,
         'speed': s,
@@ -75,7 +72,6 @@ def ioload_test(rd, size, cnt):
     for i in range(rd):
         buf = ioload(size, cnt)
         bufs.append(buf)
-    # return ";".join(bufs)
     return bufs
 
 
@@ -110,7 +106,6 @@ def network_test(server_ip, port):
     maxr = str(sender["max_rtt"])
     minr = str(sender["min_rtt"])
     meanr = str(sender["mean_rtt"])
-    # return ",".join([bps, meanr, minr, maxr])
     return {
         'bps': bps,
         'meanr': meanr,
@@ -133,7 +128,6 @@ def cpu_test(n):
     for i in range(1, n + 1):
         r *= i
     ed = time.time() * 1000
-    # return fstr(float(ed) - float(st))
     return (float(ed) - float(st))
 
 
@@ -152,7 +146,6 @@ def cpu_util_test(n):
         res[time.time() * 1000] = 0
         i += 1
     res = sorted(res.keys())
-    # res = ";".join([fstr(v) for v in res])
     return res
 
 
@@ -162,7 +155,6 @@ def cpu_rand_test(n):
     for i in range(1, n + 1):
         idx = [random.choice(s) for v in xrange(32)]
     ed = time.time() * 1000
-    # return fstr(float(ed) - float(st))
     return (float(ed) - float(st))
 
 # def read_perf():

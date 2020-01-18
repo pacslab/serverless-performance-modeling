@@ -160,18 +160,6 @@ def stat_basic(argv=1):
     inst_priv_ip = get_inst_priv_ip()
     cpu_info = get_cpuinfo_short()
 
-    # res = [
-    #     exist_id,
-    #     new_id,
-    #     vm_id,
-    #     inst_id,
-    #     vm_priv_ip,
-    #     vm_pub_ip,
-    #     inst_priv_ip,
-    #     uptime,
-    #     cpu_info]
-    # res = "#".join([str(v) for v in res])
-
     res = {
         'exist_id': exist_id,
         'new_id': new_id,
