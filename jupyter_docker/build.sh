@@ -6,7 +6,13 @@ cat ../deployments/requirements.txt > $ALLREQSFILE
 echo "" >> $ALLREQSFILE
 cat ../experiments/requirements.txt >> $ALLREQSFILE
 
+# Copying pacsltk to this folder
+cp -R ../pacsltk ./pacsltk
+
 # Build the container
 IMAGE_NAME=$(cat .dockername)
 echo "Image Name: $IMAGE_NAME"
-docker build -t $IMAGE_NAME -f jupyter_docker/Dockerfile ..
+docker build -t $IMAGE_NAME -f Dockerfile .
+
+# remove pacsltk from this folder
+rm -R pacsltk

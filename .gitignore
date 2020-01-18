@@ -130,3 +130,8 @@ pacsltk-tmp.zip
 tmp.zip
 .secret-env
 res-*.csv
+
+.jupyter
+.config
+.local
+.bash_history

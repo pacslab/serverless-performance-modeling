@@ -20,6 +20,10 @@ RUN pip install jupyter_contrib_nbextensions && \
     # can modify or enable additional extensions here
     jupyter nbextension enable spellchecker/main --user
 
-COPY jupyter_docker/requirements.txt /requirements.txt
+COPY requirements.txt /requirements.txt
 
 RUN pip install -r /requirements.txt
+
+ADD pacsltk /pacsltk
+
+RUN pip install /pacsltk
