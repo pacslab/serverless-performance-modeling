@@ -83,7 +83,7 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
             exp_request_before_kill = 1 / prob_kill_mth
 
             L = arrival_rate * prob_mth_server
-            T = idle_time_before_kill
+            T = idle_time_before_kill + warm_service_time
             # average time between requests, when those requests wouldn't
             # be so far apart that results in killing the container.
             avg_inter_arrival = (-1 * T * exp(-1 * L * T)) + \
