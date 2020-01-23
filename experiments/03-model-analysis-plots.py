@@ -67,28 +67,70 @@ plt.grid(True)
 
 tmp_fig_save("07_tractability_analysis")
 
-# %% Compute and Plot What-Ifs for System Characteristics
+# %% Compute What-Ifs for System Characteristics
 workloads = [
     (2.0, 2.2), (.25, .28), (.4, 25), (5, 25)
 ]
 
-plt.figure(figsize=(7, 2))
-
-for warm_service_time, cold_service_time in tqdm(workloads):
+dfs = []
+for warm_service_time, cold_service_time in workloads:
     params = {
-        "arrival_rate": 10,
+        "arrival_rate": 1,
         "warm_service_time": warm_service_time,
         "cold_service_time": cold_service_time,
-        "idle_time_before_kill": np.arange(5, 10*60, 1),
+        "idle_time_before_kill": np.append(np.arange(1, 10, 1), np.arange(10, 10*60, 10)),
     }
     df = pd.DataFrame(data=params)
-    df = pd.concat([df, df.apply(analyze_sls, axis=1)], axis=1)
+    df = pd.concat([df, df.progress_apply(analyze_sls, axis=1)], axis=1)
+    dfs.append(df)
 
-    plt.plot(df['idle_time_before_kill'], df['avg_utilization'] *
+    
+# %% Plot the What-Ifs
+
+def plot_configs(ylab):
+    plt.legend()
+    plt.tight_layout()
+    plt.grid(True)
+    plt.xlabel("$T_{{exp}} (s)$")
+    plt.ylabel(ylab)
+    plt.gcf().subplots_adjust(left=0.1, bottom=0.22)
+
+
+# Utilization
+plt.figure(figsize=(7, 2))
+idx = 0
+for df in dfs:
+    warm_service_time, cold_service_time = workloads[idx]
+    plt.semilogx(df['idle_time_before_kill'], df['avg_utilization'] *
              100, label=f"{warm_service_time}, {cold_service_time}")
+    idx += 1
 
-plt.legend()
-plt.tight_layout()
-plt.grid(True)
-plt.xlabel("$T_{{exp}}$")
-plt.ylabel("U")
+plot_configs("U (%)")
+tmp_fig_save("08_variable_texp_util")
+
+# Cold Start Probability
+plt.figure(figsize=(7, 2))
+idx = 0
+for df in dfs:
+    warm_service_time, cold_service_time = workloads[idx]
+    plt.semilogx(df['idle_time_before_kill'], df['cold_prob'] *
+             100, label=f"{warm_service_time}, {cold_service_time}")
+    idx += 1
+
+plot_configs("$P_{{cold}}$ (%)")
+tmp_fig_save("08_variable_texp_pcold")
+
+
+# Average Response Time
+plt.figure(figsize=(7, 2))
+idx = 0
+for df in dfs:
+    warm_service_time, cold_service_time = workloads[idx]
+    plt.semilogx(df['idle_time_before_kill'], df['avg_resp_time'] *
+             1, label=f"{warm_service_time}, {cold_service_time}")
+    idx += 1
+
+plot_configs("$RT_{{avg}}$ (s)")
+tmp_fig_save("08_variable_texp_rt_avg")
+
+# %%

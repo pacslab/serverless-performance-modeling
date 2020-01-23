@@ -60,6 +60,7 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
     kill_rates = [0.0]
     cold_probs = [1]
     running_counts = [0]
+    running_warm_counts = [0]
     resp_times = [cold_service_time]
 
     while server_count - server_max < 5:
@@ -111,6 +112,7 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
         cold_probs.append(prob_block)
         running_counts.append(running_count)
         resp_times.append(resp_time)
+        running_warm_counts.append(running_count_warm)
 
         if block_rate > kill_rate:
             server_max = server_count
@@ -121,6 +123,7 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
     cold_probs = np.array(cold_probs)
     running_counts = np.array(running_counts)
     resp_times = np.array(resp_times)
+    running_warm_counts = np.array(running_warm_counts)
 
     states_counts = len(server_counts)
     Q = np.zeros((states_counts, states_counts))
@@ -144,14 +147,16 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
 
     avg_server_count = np.dot(server_counts, solution)
     avg_running_count = np.dot(running_counts, solution)
+    avg_running_warm_count = np.dot(running_warm_counts, solution)
     avg_resp_time = np.dot(resp_times, solution)
-    avg_idle_count = avg_server_count - avg_running_count
+    avg_idle_count = avg_server_count - avg_running_warm_count
     cold_prob = np.dot(cold_probs, solution)
-    avg_utilization = avg_running_count / avg_server_count
+    avg_utilization = avg_running_warm_count / avg_server_count
 
     return {
         "avg_server_count": avg_server_count,
         "avg_running_count": avg_running_count,
+        "avg_running_warm_count": avg_running_warm_count,
         "avg_idle_count": avg_idle_count,
         "cold_prob": cold_prob,
         "avg_utilization": avg_utilization,
