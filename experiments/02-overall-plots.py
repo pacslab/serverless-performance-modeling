@@ -162,3 +162,14 @@ plt.ylabel("U")
 plt.tight_layout()
 
 tmp_fig_save("06_perf_model_utilization")
+
+
+# %% Caculate MAPE
+mod_cols = [c for c in all_df.columns if "model_" in c]
+mod_df = all_df.loc[:, mod_cols].T
+
+print("Calculating The Mean Absolute Percentage Error...\n")
+for col_name in ['ColdStartProbability', 'AverageInstanceCount', 'AverageUtilization', 'AverageRunningInstances', 'AverageIdleInstances']:
+    mod_vals = mod_df[col_name].values
+    exp_vals = exp_df[col_name].values
+    print(f"{col_name}: {np.mean(np.abs(mod_vals - exp_vals) / mod_vals * 100):4.2f} %")
