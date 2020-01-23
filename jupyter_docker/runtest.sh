@@ -7,4 +7,8 @@ docker run -it --rm \
     --name slsperftest \
     -v "$(pwd)":/home/jovyan \
     --user $DOCKER_USER \
-    $IMAGE_NAME /bin/bash -c 'cd experiments && python 01-parse-plot.py && python 02-overall-plots.py && ls figs/'
+    $IMAGE_NAME /bin/bash -c 'cd experiments && \
+        python 01-parse-plot.py && \
+        python 02-overall-plots.py && \
+        python 03-model-analysis-plots.py && \
+        ls figs/'
