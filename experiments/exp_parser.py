@@ -128,10 +128,19 @@ def parse_counting_info(df, ss_df, df_inst, step_seconds):
         else:
             return 0
 
+    # get running containers count
+    def func_running_warm_count(x):
+        val = df.loc[(df.loc[:,'client_start_time_dt'] < x.name) & (df.loc[:,'client_end_time_dt'] > x.name) & (df.loc[:,'is_cold'] == False), 'inst_id'].nunique()
+        if val is not None:
+            return val
+        else:
+            return 0
+
 
     df_counts['running_count'] = df_counts.apply(func_running_count, axis=1)
+    df_counts['running_warm_count'] = df_counts.apply(func_running_warm_count, axis=1)
     df_counts['idle_count'] = df_counts['instance_count'] - df_counts['running_count']
-    df_counts['utilization'] = df_counts['running_count'] / df_counts['instance_count']
+    df_counts['utilization'] = df_counts['running_warm_count'] / df_counts['instance_count']
 
     # get average numbers
     avg_instance_count = df_counts['instance_count'].mean()

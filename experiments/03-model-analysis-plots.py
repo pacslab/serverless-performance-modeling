@@ -78,7 +78,7 @@ for warm_service_time, cold_service_time in workloads:
         "arrival_rate": 1,
         "warm_service_time": warm_service_time,
         "cold_service_time": cold_service_time,
-        "idle_time_before_kill": np.append(np.arange(1, 10, 1), np.arange(10, 10*60, 10)),
+        "idle_time_before_kill": np.append(np.arange(.1, 10, .1), np.arange(10, 10*60, 10)),
     }
     df = pd.DataFrame(data=params)
     df = pd.concat([df, df.progress_apply(analyze_sls, axis=1)], axis=1)
@@ -93,7 +93,7 @@ def plot_configs(ylab):
     plt.grid(True)
     plt.xlabel("$T_{{exp}} (s)$")
     plt.ylabel(ylab)
-    plt.gcf().subplots_adjust(left=0.1, bottom=0.22)
+    plt.gcf().subplots_adjust(left=0.08, bottom=0.22)
 
 
 # Utilization
@@ -132,5 +132,3 @@ for df in dfs:
 
 plot_configs("$RT_{{avg}}$ (s)")
 tmp_fig_save("08_variable_texp_rt_avg")
-
-# %%
