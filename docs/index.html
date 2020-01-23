@@ -12,7 +12,7 @@
     gtag('config', 'UA-156185125-1');
     </script>
 
-    
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -136,7 +136,7 @@
                 </p>
             </div>
             <div class="row">
-                <form class="mb-5">
+                <form id="form-workload-props" class="mb-5">
                     <!-- System Properties -->
                     <h3>System Properties</h3>
                     <p>
@@ -150,7 +150,7 @@
                             Idle Expiration Time (secs):
                         </label>
                         <div class="col-sm-3">
-                            <input type="number" class="form-control" id="idleBeforeExp" value="600"
+                            <input type="number" class="form-control" id="idleBeforeExp" name="idleBeforeExp" value="600"
                                 aria-describedby="idleBeforeExpHelp">
                         </div>
                         <small id="idleBeforeExpHelp" class="form-text text-muted col-sm-6">
@@ -170,7 +170,7 @@
                             Average Warm Service Time (secs):
                         </label>
                         <div class="col-sm-3">
-                            <input type="number" step="0.01" class="form-control" id="warmServiceTime" value="2.05"
+                            <input type="number" step="0.01" class="form-control" id="warmServiceTime" name="warmServiceTime" value="2.05"
                                 aria-describedby="warmServiceTimeHelp">
                         </div>
                         <small id="warmServiceTimeHelp" class="form-text text-muted col-sm-6">
@@ -183,7 +183,7 @@
                             Average Cold Service Time (secs):
                         </label>
                         <div class="col-sm-3">
-                            <input type="number" step="0.01" class="form-control" id="coldServiceTime" value="2.2"
+                            <input type="number" step="0.01" class="form-control" id="coldServiceTime" name="coldServiceTime" value="2.2"
                                 aria-describedby="coldServiceTimeHelp">
                         </div>
                         <small id="coldServiceTimeHelp" class="form-text text-muted col-sm-6">
@@ -198,7 +198,7 @@
                         </label>
                         <div class="col-sm-3">
                             <input type="number" min="0.1" step="0.1" value="10" max="100" class="form-control"
-                                id="arrivalRate" value="10" aria-describedby="arrivalRateHelp"
+                                id="arrivalRate" name="arrivalRate" value="10" aria-describedby="arrivalRateHelp"
                                 onchange="updateArrivalRateVal(this.value);">
                         </div>
                         <small id="arrivalRateHelp" class="form-text text-muted col-sm-6">
