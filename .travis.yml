@@ -10,6 +10,12 @@ jobs:
         # run tests
         - cd jupyter_docker && DOCKER_USER="root" bash runtest.sh && cd ..
         # push if tests where successful (later)
+    - stage: Build and Push API Docker Images
+      script:
+        # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - cd web/api && bash build.sh && cd ../../
+        # run tests
+        # push if tests where successful (later)
     - stage: deploy
       language: python
       python: 3.6

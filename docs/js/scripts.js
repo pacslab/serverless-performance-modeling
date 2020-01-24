@@ -1,3 +1,5 @@
+var api_address_base = "http://127.0.0.1:5000/"
+
 function updateArrivalRateVal(val) {
     document.getElementById('arrivalRateVal').innerHTML = val;
 }
@@ -17,8 +19,18 @@ $("#form-workload-props").submit(function (event) {
     event.preventDefault();
 
     console.log("submitting...");
-    console.log($('#form-workload-props').serialize());
     var data = getFormJsonData('#form-workload-props');
     console.log(data);
     console.log(JSON.stringify(data));
+
+    let url = api_address_base + "perfmodel/api/props";
+    $.ajax({
+        method: "POST",
+        url: url,
+        dataType: "json",
+        contentType:"application/json",
+        data: JSON.stringify(data)
+    }).done(function (data) {
+        console.log(data)
+    });
 });
