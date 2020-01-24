@@ -1,4 +1,4 @@
-var api_address_base = "http://savi.nima-dev.com:5000/"
+var api_address_base = "https://savi.nima-dev.com:4443/"
 
 function updateArrivalRateVal(val) {
     document.getElementById('arrivalRateVal').innerHTML = val;
