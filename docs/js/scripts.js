@@ -16,7 +16,6 @@ function getFormJsonData(formid) {
 }
 
 function getProps() {
-    console.log("submitting...");
     var data = getFormJsonData('#form-workload-props');
     console.log(data);
     console.log(JSON.stringify(data));
@@ -41,11 +40,7 @@ function getProps() {
             resultHtml += "<td>" + key + "</td>";
             resultHtml += "<td>" + value + "</td>";
             resultHtml += "</tr>";
-            // do something with "key" and "value" variables
         }
-
-        console.log(resultHtml);
-
 
         $("#props-body").html(resultHtml);
     });
