@@ -20,6 +20,21 @@ function getProps() {
     console.log(data);
     console.log(JSON.stringify(data));
 
+    // set image
+    $("#img-pcold-arrival").attr("src", 
+        api_address_base + "perfmodel/api/plots/pcold-arrival.png?" 
+        + "idleBeforeExp=" + data['idleBeforeExp']
+        + "&warmServiceTime=" + data['warmServiceTime']
+        + "&coldServiceTime=" + data['coldServiceTime']
+    )
+    $("#img-rt-arrival").attr("src", 
+        api_address_base + "perfmodel/api/plots/rt-arrival.png?" 
+        + "idleBeforeExp=" + data['idleBeforeExp']
+        + "&warmServiceTime=" + data['warmServiceTime']
+        + "&coldServiceTime=" + data['coldServiceTime']
+    )
+
+    // get props
     let url = api_address_base + "perfmodel/api/props";
     $.ajax({
         method: "POST",

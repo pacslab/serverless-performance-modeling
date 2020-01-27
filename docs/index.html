@@ -197,9 +197,9 @@
                             Arrival Rate (reqs/sec): <span id="arrivalRateVal"></span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="number" min="0.000001" step="0.000001" value="10" max="100" class="form-control"
-                                id="arrivalRate" name="arrivalRate" value="10" aria-describedby="arrivalRateHelp"
-                                onchange="updateArrivalRateVal(this.value);">
+                            <input type="number" min="0.000001" step="0.000001" value="10" max="100"
+                                class="form-control" id="arrivalRate" name="arrivalRate" value="10"
+                                aria-describedby="arrivalRateHelp" onchange="updateArrivalRateVal(this.value);">
                         </div>
                         <small id="arrivalRateHelp" class="form-text text-muted col-sm-6">
                             What is the arrival rate? (e.g., 2 requests per second)
@@ -223,6 +223,17 @@
 
                     </tbody>
                 </table>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col12">
+                    <img id="img-pcold-arrival" src=""
+                        class="img-fluid mx-auto" alt="Pcold vs Arrival Rate">
+                </div>
+                <div class="col12">
+                    <img id="img-rt-arrival" src=""
+                        class="img-fluid mx-auto" alt="Response Time vs Arrival Rate">
+                </div>
             </div>
         </div>
 
