@@ -4,3 +4,8 @@ flask-cors==3.0.8
 
 # Deployment
 gunicorn==19.9.0
+
+# Plots
+matplotlib==3.1.2
+pandas==0.25.3
+numpy==1.18.1
