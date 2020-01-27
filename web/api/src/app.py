@@ -68,13 +68,13 @@ def pcold_plot_arrival_rate():
     df = pd.concat([df, df.apply(analyze_sls, axis=1)], axis=1)
 
     # Cold Start Probability
-    fig = plt.figure(figsize=(14, 4))
+    fig = plt.figure(figsize=(10, 3))
     plt.semilogx(df['arrival_rate'], df['cold_prob'] * 100)
 
     plot_configs("Cold Start Prob (%)")
 
     output = io.BytesIO()
-    FigureCanvas(fig).print_png(output)
+    FigureCanvas(fig).print_png(output, dpi=300)
     return Response(output.getvalue(), mimetype='image/png')
 
 
@@ -101,13 +101,13 @@ def rt_plot_arrival_rate():
     df = pd.concat([df, df.apply(analyze_sls, axis=1)], axis=1)
 
     # Cold Start Probability
-    fig = plt.figure(figsize=(14, 4))
+    fig = plt.figure(figsize=(10, 3))
     plt.semilogx(df['arrival_rate'], df['avg_resp_time'])
 
     plot_configs("RT (s)")
 
     output = io.BytesIO()
-    FigureCanvas(fig).print_png(output)
+    FigureCanvas(fig).print_png(output, dpi=300)
     return Response(output.getvalue(), mimetype='image/png')
 
 
