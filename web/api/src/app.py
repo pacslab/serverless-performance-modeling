@@ -1,23 +1,30 @@
 #!python
 from flask import Flask, jsonify, request, abort, make_response
+from flask_cors import CORS, cross_origin
 
 from pacsltk import perfmodel
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
+cors = CORS(app)
+
 
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
+
 @app.errorhandler(400)
 def not_found(error):
     return make_response(jsonify({'error': 'Bad input'}), 400)
+
 
 @app.errorhandler(500)
 def not_found(error):
     return make_response(jsonify({'error': 'Server error'}), 500)
 
-@app.route('/perfmodel/api/props', methods=['GET'])
+
+@app.route('/perfmodel/api/props', methods=['POST'])
+@cross_origin()
 def get_props():
     required_params = ['idleBeforeExp', 'warmServiceTime',
                        'coldServiceTime', 'arrivalRate']

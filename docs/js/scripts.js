@@ -1,3 +1,5 @@
+var api_address_base = "https://savi.nima-dev.com:4443/"
+
 function updateArrivalRateVal(val) {
     document.getElementById('arrivalRateVal').innerHTML = val;
 }
@@ -13,12 +15,42 @@ function getFormJsonData(formid) {
     return data;
 }
 
-$("#form-workload-props").submit(function (event) {
-    event.preventDefault();
-
-    console.log("submitting...");
-    console.log($('#form-workload-props').serialize());
+function getProps() {
     var data = getFormJsonData('#form-workload-props');
     console.log(data);
     console.log(JSON.stringify(data));
+
+    let url = api_address_base + "perfmodel/api/props";
+    $.ajax({
+        method: "POST",
+        url: url,
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(data)
+    }).done(function (props) {
+        console.log(props);
+
+        let resultHtml = ""
+        let idx = 0;
+        for (var key in props) {
+            idx++;
+            var value = props[key];
+            resultHtml += "<tr>";
+            resultHtml += "<th scope=\"row\">" + idx + "</th>";
+            resultHtml += "<td>" + key + "</td>";
+            resultHtml += "<td>" + value + "</td>";
+            resultHtml += "</tr>";
+        }
+
+        $("#props-body").html(resultHtml);
+    });
+}
+
+$("#form-workload-props").submit(function (event) {
+    event.preventDefault();
+
+    getProps();
 });
+
+// Run on page load
+getProps();

@@ -5,11 +5,11 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156185125-1"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-    gtag('config', 'UA-156185125-1');
+        gtag('config', 'UA-156185125-1');
     </script>
 
 
@@ -150,8 +150,8 @@
                             Idle Expiration Time (secs):
                         </label>
                         <div class="col-sm-3">
-                            <input type="number" class="form-control" id="idleBeforeExp" name="idleBeforeExp" value="600"
-                                aria-describedby="idleBeforeExpHelp">
+                            <input type="number" class="form-control" id="idleBeforeExp" name="idleBeforeExp"
+                                value="600" aria-describedby="idleBeforeExpHelp">
                         </div>
                         <small id="idleBeforeExpHelp" class="form-text text-muted col-sm-6">
                             How long does the platform keep the servers after being idle? (10 minutes for AWS)
@@ -170,8 +170,8 @@
                             Average Warm Service Time (secs):
                         </label>
                         <div class="col-sm-3">
-                            <input type="number" step="0.01" class="form-control" id="warmServiceTime" name="warmServiceTime" value="2.05"
-                                aria-describedby="warmServiceTimeHelp">
+                            <input type="number" step="0.01" class="form-control" id="warmServiceTime"
+                                name="warmServiceTime" value="2.05" aria-describedby="warmServiceTimeHelp">
                         </div>
                         <small id="warmServiceTimeHelp" class="form-text text-muted col-sm-6">
                             What is the response time for warm start requests?
@@ -183,8 +183,8 @@
                             Average Cold Service Time (secs):
                         </label>
                         <div class="col-sm-3">
-                            <input type="number" step="0.01" class="form-control" id="coldServiceTime" name="coldServiceTime" value="2.2"
-                                aria-describedby="coldServiceTimeHelp">
+                            <input type="number" step="0.01" class="form-control" id="coldServiceTime"
+                                name="coldServiceTime" value="2.2" aria-describedby="coldServiceTimeHelp">
                         </div>
                         <small id="coldServiceTimeHelp" class="form-text text-muted col-sm-6">
                             What is the response time for cold start requests? (for AWS: user init time + platform init
@@ -208,6 +208,21 @@
 
                     <button type="submit" class="btn btn-success mt-3">Calculate</button>
                 </form>
+            </div>
+
+            <div class="row mb-5">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Characteristic</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody id='props-body'>
+
+                    </tbody>
+                </table>
             </div>
         </div>
 
