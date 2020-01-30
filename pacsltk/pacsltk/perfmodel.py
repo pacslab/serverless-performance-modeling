@@ -59,7 +59,7 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
     block_rates = [arrival_rate]
     kill_rates = [0.0]
     cold_probs = [1]
-    running_counts = [0]
+    running_counts = [arrival_rate * 1 * cold_service_time]
     running_warm_counts = [0]
     resp_times = [cold_service_time]
 
