@@ -146,6 +146,7 @@ def get_props():
         'Average Running Instances (warm)': props['avg_running_warm_count'],
         'AverageIdleInstances': props['avg_idle_count'],
         'Probability of Cold Start': props['cold_prob'],
+        'Probability of Rejection': props['rejection_prob'],
     })
 
 

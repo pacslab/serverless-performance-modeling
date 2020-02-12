@@ -44,12 +44,14 @@ def print_props(props):
     print("------------------\n")
 
 
-def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, idle_time_before_kill):
+def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, idle_time_before_kill, maximum_concurrency=1000, faster_solution=True):
     warm_service_rate = 1 / warm_service_time
     cold_service_rate = 1 / cold_service_time
     rho = arrival_rate / warm_service_rate
 
-    server_max = 0
+    server_max = maximum_concurrency
+    if faster_solution:
+        server_max = min(30, maximum_concurrency)
     server_count = 0
 
     pblock_old = 1
@@ -63,7 +65,8 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
     running_warm_counts = [0]
     resp_times = [cold_service_time]
 
-    while server_count - server_max < 5:
+
+    while server_count < server_max:
         server_count += 1
 
         # The blocking probability, the blocked requests are cold starts.
@@ -98,12 +101,14 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
             kill_rate += 0
 
         # Average number of warm containers serving the requests
-        running_count_warm = arrival_rate * (1 - prob_block) * warm_service_time
+        running_count_warm = arrival_rate * \
+            (1 - prob_block) * warm_service_time
         running_count_cold = arrival_rate * prob_block * cold_service_time
         running_count = running_count_warm + running_count_cold
 
         # Average Response Time
-        resp_time = (prob_block * cold_service_time) + ((1 - prob_block) * warm_service_time)
+        resp_time = (prob_block * cold_service_time) + \
+            ((1 - prob_block) * warm_service_time)
 
         # Record properties for each state in CTMC
         server_counts.append(server_count)
@@ -114,8 +119,9 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
         resp_times.append(resp_time)
         running_warm_counts.append(running_count_warm)
 
-        if block_rate > kill_rate:
-            server_max = server_count
+        if faster_solution:
+            if block_rate > kill_rate:
+                server_max = min(server_count + 30, maximum_concurrency)
 
     server_counts = np.array(server_counts)
     block_rates = np.array(block_rates)
@@ -124,6 +130,11 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
     running_counts = np.array(running_counts)
     resp_times = np.array(resp_times)
     running_warm_counts = np.array(running_warm_counts)
+
+    # if hasn't reached maximum concurrency, we can't measure it via float (accuracy is not enough, out guess is zero)
+    rejection_prob = 0
+    if server_max == maximum_concurrency:
+        rejection_prob = cold_probs[-1]
 
     states_counts = len(server_counts)
     Q = np.zeros((states_counts, states_counts))
@@ -161,6 +172,7 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
         "cold_prob": cold_prob,
         "avg_utilization": avg_utilization,
         "avg_resp_time": avg_resp_time,
+        "rejection_prob": rejection_prob,
     }, {
         "steady_state_probs": solution,
         "server_counts": server_counts,
