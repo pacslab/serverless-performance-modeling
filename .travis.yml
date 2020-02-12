@@ -33,6 +33,7 @@ jobs:
       before_deploy:
         # convert README file
         - source .travis/build.sh
+        - cd pacsltk
       deploy:
         provider: pypi
         user: nima_mahmoudi
