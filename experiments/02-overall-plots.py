@@ -126,7 +126,7 @@ df = pd.DataFrame(data=params)
 df = pd.concat([df, df.apply(analyze_sls, axis=1)], axis=1)
 
 # %% Cold Start Probability Plot
-plt.figure(figsize=(7, 2))
+plt.figure(figsize=(4, 2))
 plt.plot(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
 plt.plot(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
          * 100, 'k' + exp_fmt, label='Experiment')
@@ -135,12 +135,12 @@ plt.legend()
 plt.tight_layout()
 plt.ylabel("$P_{{cold}}$ (%)")
 plt.xlabel('$\lambda$')
-plt.gcf().subplots_adjust(left=0.1, bottom=0.2)
+plt.gcf().subplots_adjust(left=0.15, bottom=0.2)
 
 tmp_fig_save("04_perf_model_p_cold")
 
 # %% Server Count Plot
-plt.figure(figsize=(7, 2))
+plt.figure(figsize=(4, 2))
 plt.plot(df['arrival_rate'], df['avg_idle_count'], label="Model Prediction")
 plt.plot(exp_df['ArrivalRate'], exp_df['AverageIdleInstances'], 'k' + exp_fmt, label="Experiment")
 plt.xlabel('$\lambda$')
@@ -148,11 +148,12 @@ plt.ylabel("$C_{{i,w}}$")
 plt.tight_layout()
 plt.legend()
 plt.grid(True)
+plt.gcf().subplots_adjust(left=0.15, bottom=0.2)
 
 tmp_fig_save("05_perf_model_idle_count")
 
 # %% Utilization Plot
-plt.figure(figsize=(7, 2))
+plt.figure(figsize=(4, 2))
 plt.plot(df['arrival_rate'], df['avg_utilization'], label='Model Prediction')
 plt.plot(exp_df['ArrivalRate'], exp_df['AverageUtilization'], 'k' + exp_fmt, label="Experiment")
 plt.grid(True)
@@ -160,6 +161,7 @@ plt.legend()
 plt.xlabel('$\lambda$')
 plt.ylabel("U")
 plt.tight_layout()
+plt.gcf().subplots_adjust(left=0.15, bottom=0.2)
 
 tmp_fig_save("06_perf_model_utilization")
 
