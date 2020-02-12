@@ -110,6 +110,12 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
         resp_time = (prob_block * cold_service_time) + \
             ((1 - prob_block) * warm_service_time)
 
+        # If we reached maximum concurrency, we don't have cold starts any more!
+        if server_count == maximum_concurrency:
+            resp_time = warm_service_time
+            running_count_cold = 0
+            running_count = running_count_warm
+
         # Record properties for each state in CTMC
         server_counts.append(server_count)
         block_rates.append(block_rate)
@@ -133,8 +139,13 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
 
     # if hasn't reached maximum concurrency, we can't measure it via float (accuracy is not enough, out guess is zero)
     rejection_prob = 0
+    rejection_rate = 0
+    # when we reach maximum concurrency, cold starts can't happen, so they are rejections
     if server_max == maximum_concurrency:
         rejection_prob = cold_probs[-1]
+        cold_probs[-1] = 0
+        rejection_rate = block_rates[-1]
+        block_rates[-1] = 0
 
     states_counts = len(server_counts)
     Q = np.zeros((states_counts, states_counts))
@@ -173,6 +184,7 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
         "avg_utilization": avg_utilization,
         "avg_resp_time": avg_resp_time,
         "rejection_prob": rejection_prob,
+        "rejection_rate": rejection_rate,
     }, {
         "steady_state_probs": solution,
         "server_counts": server_counts,

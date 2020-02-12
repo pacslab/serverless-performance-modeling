@@ -147,6 +147,7 @@ def get_props():
         'AverageIdleInstances': props['avg_idle_count'],
         'Probability of Cold Start': props['cold_prob'],
         'Probability of Rejection': props['rejection_prob'],
+        'Rate of Rejection': props['rejection_rate'],
     })
 
 

@@ -1,6 +1,6 @@
 from pacsltk import perfmodel
 
-arrival_rate = 500
+arrival_rate = 100
 warm_service_time = 2
 cold_service_time = 25
 idle_time_before_kill = 10*60
