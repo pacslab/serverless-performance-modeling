@@ -9,4 +9,4 @@ with open(_init_file, 'rb') as f:
     version = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
 
-print(version, end="")
+print(version)
