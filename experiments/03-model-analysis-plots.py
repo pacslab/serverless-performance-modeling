@@ -68,12 +68,16 @@ plt.grid(True)
 tmp_fig_save("07_tractability_analysis")
 
 # %% Compute What-Ifs for System Characteristics
+# workloads = [
+#     (2.0, 2.2), (.25, .28), (.4, 25), (5, 25)
+# ]
+
 workloads = [
-    (2.0, 2.2), (.25, .28), (.4, 25), (5, 25)
+    (2.0, 2.2, "W1"), (0.3, 10, "W2"), (0.02, 1, "W3"), (4.211, 5.961, "W4"), (1.809, 26.681, "W5")
 ]
 
 dfs = []
-for warm_service_time, cold_service_time in workloads:
+for warm_service_time, cold_service_time, _ in workloads:
     params = {
         "arrival_rate": 1,
         "warm_service_time": warm_service_time,
@@ -100,9 +104,9 @@ def plot_configs(ylab):
 plt.figure(figsize=(7, 2))
 idx = 0
 for df in dfs:
-    warm_service_time, cold_service_time = workloads[idx]
+    warm_service_time, cold_service_time, label = workloads[idx]
     plt.semilogx(df['idle_time_before_kill'], df['avg_utilization'] *
-             100, label=f"{warm_service_time}, {cold_service_time}")
+                 100, label=label)
     idx += 1
 
 plot_configs("U (%)")
@@ -112,9 +116,9 @@ tmp_fig_save("08_variable_texp_util")
 plt.figure(figsize=(7, 2))
 idx = 0
 for df in dfs:
-    warm_service_time, cold_service_time = workloads[idx]
+    warm_service_time, cold_service_time, label = workloads[idx]
     plt.semilogx(df['idle_time_before_kill'], df['cold_prob'] *
-             100, label=f"{warm_service_time}, {cold_service_time}")
+                 100, label=label)
     idx += 1
 
 plot_configs("$P_{{cold}}$ (%)")
@@ -125,9 +129,9 @@ tmp_fig_save("08_variable_texp_pcold")
 plt.figure(figsize=(7, 2))
 idx = 0
 for df in dfs:
-    warm_service_time, cold_service_time = workloads[idx]
+    warm_service_time, cold_service_time, label = workloads[idx]
     plt.semilogx(df['idle_time_before_kill'], df['avg_resp_time'] *
-             1, label=f"{warm_service_time}, {cold_service_time}")
+                 1, label=label)
     idx += 1
 
 plot_configs("$RT_{{avg}}$ (s)")
