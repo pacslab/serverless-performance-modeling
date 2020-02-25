@@ -137,16 +137,6 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
     resp_times = np.array(resp_times)
     running_warm_counts = np.array(running_warm_counts)
 
-    # if hasn't reached maximum concurrency, we can't measure it via float (accuracy is not enough, out guess is zero)
-    rejection_prob = 0
-    rejection_rate = 0
-    # when we reach maximum concurrency, cold starts can't happen, so they are rejections
-    if server_max == maximum_concurrency:
-        rejection_prob = cold_probs[-1]
-        cold_probs[-1] = 0
-        rejection_rate = block_rates[-1]
-        block_rates[-1] = 0
-
     states_counts = len(server_counts)
     Q = np.zeros((states_counts, states_counts))
     for i in range(states_counts):
@@ -166,6 +156,16 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
     solution = np.linalg.solve(np.array(Q.T), np.array(y.T))
     solution = solution.reshape(solution.shape[0],)
     solution[solution < 0] = 0
+
+    # if hasn't reached maximum concurrency, we can't measure it via float (accuracy is not enough, out guess is zero)
+    rejection_prob = 0
+    rejection_rate = 0
+    # when we reach maximum concurrency, cold starts can't happen, so they are rejections
+    if server_max == maximum_concurrency:
+        rejection_prob = cold_probs[-1] * solution[-1]
+        cold_probs[-1] = 0
+        rejection_rate = block_rates[-1] * solution[-1]
+        block_rates[-1] = 0
 
     avg_server_count = np.dot(server_counts, solution)
     avg_running_count = np.dot(running_counts, solution)
