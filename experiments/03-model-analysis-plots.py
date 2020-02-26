@@ -60,7 +60,7 @@ df = pd.concat([df, df.progress_apply(analyze_sls, axis=1)], axis=1)
 # %% Plot The Processing Times
 plt.figure(figsize=(4, 2))
 plt.plot(df['arrival_rate'], df['ProcessingTime'])
-plt.xlabel("$\lambda$")
+plt.xlabel("Arrival Rate (reqs/s)")
 plt.ylabel("Processing Time (s)")
 plt.tight_layout()
 plt.grid(True)
@@ -88,6 +88,14 @@ for warm_service_time, cold_service_time, _ in workloads:
     df = pd.concat([df, df.progress_apply(analyze_sls, axis=1)], axis=1)
     dfs.append(df)
 
+
+# %% Find Stable Expiration Threshold
+
+exp_thresholds = []
+for df in dfs:
+    exp_thresholds.append(df.loc[df['avg_resp_time'] < df['warm_service_time'][0] * \
+         1.1, 'idle_time_before_kill'].min())
+
     
 # %% Plot the What-Ifs
 
@@ -95,13 +103,13 @@ def plot_configs(ylab):
     plt.legend()
     plt.tight_layout()
     plt.grid(True)
-    plt.xlabel("$T_{{exp}} (s)$")
+    plt.xlabel("Expiration Threshold (s)")
     plt.ylabel(ylab)
     plt.gcf().subplots_adjust(left=0.08, bottom=0.22)
 
 
 # Utilization
-plt.figure(figsize=(7, 2))
+plt.figure(figsize=(4, 3))
 idx = 0
 for df in dfs:
     warm_service_time, cold_service_time, label = workloads[idx]
@@ -109,11 +117,11 @@ for df in dfs:
                  100, label=label)
     idx += 1
 
-plot_configs("U (%)")
+plot_configs("Utilization (%)")
 tmp_fig_save("08_variable_texp_util")
 
 # Cold Start Probability
-plt.figure(figsize=(7, 2))
+plt.figure(figsize=(4,3))
 idx = 0
 for df in dfs:
     warm_service_time, cold_service_time, label = workloads[idx]
@@ -121,18 +129,24 @@ for df in dfs:
                  100, label=label)
     idx += 1
 
-plot_configs("$P_{{cold}}$ (%)")
+plot_configs("Prob. of Cold Start (%)")
 tmp_fig_save("08_variable_texp_pcold")
 
 
 # Average Response Time
-plt.figure(figsize=(7, 2))
+plt.figure(figsize=(4,3))
 idx = 0
+colors=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728','#9467bd', '#8c564b', '#e377c2', '#7f7f7f','#bcbd22', '#17becf']
+linestyles=['-', '--', ':', '-.', '-', '-.', ':', '-.', '-', '--']
 for df in dfs:
     warm_service_time, cold_service_time, label = workloads[idx]
     plt.semilogx(df['idle_time_before_kill'], df['avg_resp_time'] *
                  1, label=label)
+    plt.axvline(exp_thresholds[idx], color=colors[idx], linestyles="--")
     idx += 1
 
-plot_configs("$RT_{{avg}}$ (s)")
+plt.ylim((0,10))
+
+plot_configs("Avg. Response Time (s)")
+
 tmp_fig_save("08_variable_texp_rt_avg")
