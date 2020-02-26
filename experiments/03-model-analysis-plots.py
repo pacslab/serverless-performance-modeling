@@ -47,30 +47,25 @@ def analyze_sls(row):
     return pd.Series(props)
 
 
-params = {
-    "arrival_rate": np.arange(1, 1000, 10),
-    "warm_service_time": 2.0,
-    "cold_service_time": 2.2,
-    "idle_time_before_kill": idle_mins_before_kill * 60,
-}
+# params = {
+#     "arrival_rate": np.arange(1, 1000, 10),
+#     "warm_service_time": 2.0,
+#     "cold_service_time": 2.2,
+#     "idle_time_before_kill": idle_mins_before_kill * 60,
+# }
 
-df = pd.DataFrame(data=params)
-df = pd.concat([df, df.progress_apply(analyze_sls, axis=1)], axis=1)
+# df = pd.DataFrame(data=params)
+# df = pd.concat([df, df.progress_apply(analyze_sls, axis=1)], axis=1)
 
-# %% Plot The Processing Times
-plt.figure(figsize=(4, 2))
-plt.plot(df['arrival_rate'], df['ProcessingTime'])
-plt.xlabel("Arrival Rate (reqs/s)")
-plt.ylabel("Processing Time (s)")
-plt.tight_layout()
-plt.grid(True)
+# # %% Plot The Processing Times
+# plt.figure(figsize=(4, 2))
+# plt.plot(df['arrival_rate'], df['ProcessingTime'])
+# plt.xlabel("Arrival Rate (reqs/s)")
+# plt.ylabel("Processing Time (s)")
+# plt.tight_layout()
+# plt.grid(True)
 
-tmp_fig_save("07_tractability_analysis")
-
-# %% Compute What-Ifs for System Characteristics
-# workloads = [
-#     (2.0, 2.2), (.25, .28), (.4, 25), (5, 25)
-# ]
+# tmp_fig_save("07_tractability_analysis")
 
 workloads = [
     (2.0, 2.2, "W1"), (0.3, 10, "W2"), (0.02, 1, "W3"), (4.211, 5.961, "W4"), (1.809, 26.681, "W5")
@@ -88,16 +83,9 @@ for warm_service_time, cold_service_time, _ in workloads:
     df = pd.concat([df, df.progress_apply(analyze_sls, axis=1)], axis=1)
     dfs.append(df)
 
-
-# %% Find Stable Expiration Threshold
-
-exp_thresholds = []
-for df in dfs:
-    exp_thresholds.append(df.loc[df['avg_resp_time'] < df['warm_service_time'][0] * \
-         1.1, 'idle_time_before_kill'].min())
-
     
 # %% Plot the What-Ifs
+from matplotlib.ticker import ScalarFormatter
 
 def plot_configs(ylab):
     plt.legend()
@@ -105,7 +93,8 @@ def plot_configs(ylab):
     plt.grid(True)
     plt.xlabel("Expiration Threshold (s)")
     plt.ylabel(ylab)
-    plt.gcf().subplots_adjust(left=0.08, bottom=0.22)
+    plt.gcf().subplots_adjust(left=0.15, bottom=0.22)
+    plt.gca().xaxis.set_major_formatter(ScalarFormatter())
 
 
 # Utilization
@@ -137,12 +126,17 @@ tmp_fig_save("08_variable_texp_pcold")
 plt.figure(figsize=(4,3))
 idx = 0
 colors=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728','#9467bd', '#8c564b', '#e377c2', '#7f7f7f','#bcbd22', '#17becf']
-linestyles=['-', '--', ':', '-.', '-', '-.', ':', '-.', '-', '--']
+exp_thresholds = []
+for df in dfs:
+    exp_thresholds.append(df.loc[df['avg_resp_time'] < df['warm_service_time'][0] * \
+         1.3, 'idle_time_before_kill'].min())
+
 for df in dfs:
     warm_service_time, cold_service_time, label = workloads[idx]
     plt.semilogx(df['idle_time_before_kill'], df['avg_resp_time'] *
-                 1, label=label)
-    plt.axvline(exp_thresholds[idx], color=colors[idx], linestyles="--")
+                 1, linestyle='-', label=label)
+    plt.axvline(exp_thresholds[idx], color=colors[idx], linestyle='--')
+    plt.plot(exp_thresholds[idx], min(warm_service_time*1.3, df['avg_resp_time'].max()), 'd', color=colors[idx])
     idx += 1
 
 plt.ylim((0,10))
@@ -150,3 +144,28 @@ plt.ylim((0,10))
 plot_configs("Avg. Response Time (s)")
 
 tmp_fig_save("08_variable_texp_rt_avg")
+
+
+# Num of Instances in Warm Pool
+plt.figure(figsize=(4,3))
+idx = 0
+for df in dfs:
+    warm_service_time, cold_service_time, label = workloads[idx]
+    plt.semilogx(df['idle_time_before_kill'], df['avg_server_count'], label=label)
+    idx += 1
+
+plot_configs("Average Instance Count")
+tmp_fig_save("08_variable_texp_inst_count")
+
+# User Cost Estimate
+plt.figure(figsize=(4,3))
+idx = 0
+for df in dfs:
+    warm_service_time, cold_service_time, label = workloads[idx]
+    cost_estimate = df['avg_server_count'] * df['avg_resp_time']
+    cost_estimate = cost_estimate / cost_estimate.max()
+    plt.semilogx(df['idle_time_before_kill'], cost_estimate, label=label)
+    idx += 1
+
+plot_configs("Normalized Estimated User Cost")
+tmp_fig_save("08_variable_texp_user_cost_estimate")
