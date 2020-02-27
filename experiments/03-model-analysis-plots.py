@@ -110,7 +110,7 @@ plot_configs("Utilization (%)")
 tmp_fig_save("08_variable_texp_util")
 
 # Cold Start Probability
-plt.figure(figsize=(4,3))
+plt.figure(figsize=(4,2))
 idx = 0
 for df in dfs:
     warm_service_time, cold_service_time, label = workloads[idx]
@@ -147,7 +147,7 @@ tmp_fig_save("08_variable_texp_rt_avg")
 
 
 # Num of Instances in Warm Pool
-plt.figure(figsize=(4,3))
+plt.figure(figsize=(4,2))
 idx = 0
 for df in dfs:
     warm_service_time, cold_service_time, label = workloads[idx]
@@ -169,3 +169,28 @@ for df in dfs:
 
 plot_configs("Normalized Estimated User Cost")
 tmp_fig_save("08_variable_texp_user_cost_estimate")
+
+# %% Rejection Probability Calculations
+dfs = []
+for warm_service_time, cold_service_time, _ in workloads:
+    params = {
+        "arrival_rate": np.logspace(2, 5, num=100),
+        "warm_service_time": warm_service_time,
+        "cold_service_time": cold_service_time,
+        "idle_time_before_kill": 600,
+    }
+    df = pd.DataFrame(data=params)
+    df = pd.concat([df, df.progress_apply(analyze_sls, axis=1)], axis=1)
+    dfs.append(df)
+#%% Rejection Probability Plot
+
+plt.figure(figsize=(4,2))
+idx = 0
+for df in dfs:
+    warm_service_time, cold_service_time, label = workloads[idx]
+    plt.semilogx(df['arrival_rate'], df['rejection_prob'], label=label)
+    idx += 1
+
+plot_configs("Prob. of Rejection")
+plt.xlabel('Arrival Rate (reqs/s)')
+tmp_fig_save("09_variable_texp_prob_reject")
