@@ -53,4 +53,8 @@ MIT (c) 2020 Nima Mahmoudi & Hamzeh Khazaei
 
 ## Citation
 
-You can find the paper with details of the proposed model in [PACS lab website](https://pacs.eecs.yorku.ca/publications/).
+You can find the paper with details of the proposed model in [PACS lab website](https://pacs.eecs.yorku.ca/publications/). You can use the following bibtex entry:
+
+```bib
+Coming soon...
+```
