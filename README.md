@@ -17,6 +17,7 @@ Package, experimentation results, and other artifacts for our serverless computi
 ## Artifacts
 
 Here is a list of different artifacts for the proposed model:
+
 - [Python Package on PyPi](https://pypi.org/project/pacsltk/)
 - [Datasets collected throughout experimentations](./experiments/results/)
 - [Deployment code for collecting data using experimentations](./deployments/)
