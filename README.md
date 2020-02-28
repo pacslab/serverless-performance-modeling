@@ -38,7 +38,7 @@ pip install pacsltk
 
 ## Usage
 
-Check out the [package documentation](./pacsltk).
+Check out the [package documentation](./pacsltk/).
 
 ## Examples
 
@@ -49,3 +49,7 @@ Coming soon...
 Unless otherwise specified:
 
 MIT (c) 2020 Nima Mahmoudi & Hamzeh Khazaei
+
+## Citation
+
+You can find the paper with details of the proposed model in [PACS lab website](https://pacs.eecs.yorku.ca/publications/).
