@@ -38,7 +38,7 @@ pip install pacsltk
 
 ## Usage
 
-Check out the [package documentation](./pacsltk/pacsltk).
+Check out the [package documentation](./pacsltk).
 
 ## Examples
 
