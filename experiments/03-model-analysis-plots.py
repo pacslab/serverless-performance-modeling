@@ -94,6 +94,8 @@ def plot_configs(ylab):
     plt.xlabel("Expiration Threshold (s)")
     plt.ylabel(ylab)
     plt.gcf().subplots_adjust(left=0.15, bottom=0.22)
+    plt.xticks(list(plt.xticks()[0]) + [600])
+    plt.xlim((0.1,700))
     plt.gca().xaxis.set_major_formatter(ScalarFormatter())
 
 
