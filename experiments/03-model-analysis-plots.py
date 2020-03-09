@@ -87,15 +87,16 @@ for warm_service_time, cold_service_time, _ in workloads:
 # %% Plot the What-Ifs
 from matplotlib.ticker import ScalarFormatter
 
-def plot_configs(ylab):
+def plot_configs(ylab, is_texp=True):
     plt.legend()
     plt.tight_layout()
     plt.grid(True)
     plt.xlabel("Expiration Threshold (s)")
     plt.ylabel(ylab)
     plt.gcf().subplots_adjust(left=0.15, bottom=0.22)
-    plt.xticks(list(plt.xticks()[0]) + [600])
-    plt.xlim((0.1,700))
+    if is_texp:
+        plt.xticks(list(plt.xticks()[0]) + [600])
+        plt.xlim((0.1*0.9,600*1.1))
     plt.gca().xaxis.set_major_formatter(ScalarFormatter())
 
 
@@ -193,6 +194,6 @@ for df in dfs:
     plt.semilogx(df['arrival_rate'], df['rejection_prob'], label=label)
     idx += 1
 
-plot_configs("Prob. of Rejection")
+plot_configs("Prob. of Rejection", is_texp=False)
 plt.xlabel('Arrival Rate (reqs/s)')
 tmp_fig_save("09_variable_texp_prob_reject")
