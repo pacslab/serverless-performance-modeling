@@ -145,8 +145,8 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
             Q[i, i-1] = kill_rates[i]
             out_rate += kill_rates[i]
         if i < states_counts-1:
-            Q[i, i+1] = block_rates[i]
-            out_rate += block_rates[i]
+            Q[i, i+1] = (block_rates[i] * cold_service_rate) / (block_rates[i] + cold_service_rate)
+            out_rate += (block_rates[i] * cold_service_rate) / (block_rates[i] + cold_service_rate)
         Q[i, i] = 0 - out_rate
 
     Q[:, 0] = 1
