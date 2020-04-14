@@ -19,12 +19,11 @@ Package, experimentation results, and other artifacts for our serverless computi
 Here is a list of different artifacts for the proposed model:
 
 - [Python Package on PyPi](https://pypi.org/project/pacsltk/)
+- [Interactive online model](https://nima-dev.com/serverless-performance-modeling/)
 - [Datasets collected throughout experimentations](./experiments/results/)
 - [Deployment code for collecting data using experimentations](./deployments/)
 - [Code for parsing the datasets and generating plots](./experiments/)
-- [Interactive online model](https://nima-dev.com/serverless-performance-modeling/)
 - [Jupyter notebook docker image containing the pacsltk package](https://hub.docker.com/repository/docker/nimamahmoudi/jupyter-sls-perf) ([docs](./jupyter_docker/))
-- [Flask API for online interactive model](https://hub.docker.com/repository/docker/nimamahmoudi/slsperf-api) ([docs](./web/api/))
 
 ## Requirements
 
