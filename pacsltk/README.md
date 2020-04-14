@@ -1,7 +1,7 @@
 # PACSLTK (PACS Lambda ToolKit)
 
 Developed in PACS Lab to ease the process of deployment and testing of our benchmarking workload
-to AWS Lambda. To see how you can use pacsltk, check out the [github repository](https://github.com/nimamahmoudi/serverless-performance-modeling).
+to AWS Lambda. To see how you can use pacsltk, check out the [github repository](https://github.com/pacslab/serverless-performance-modeling).
 
 ## Installation
 
@@ -32,7 +32,7 @@ perfmodel.print_props(props1)
 
 which produces an output similar to the following:
 
-```output
+```
 arrival_rate: 100
 warm_service_time: 2
 cold_service_time: 25

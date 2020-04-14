@@ -21,7 +21,7 @@
         integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
         crossorigin="anonymous"></script>
 
-    <title>SLSPERF: Serverless Computing Platforms Performance Model</title>
+    <title>Performance Modeling of Serverless Computing Platforms</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -34,7 +34,7 @@
 
     <nav class="navbar navbar-expand-sm navbar-dark mb-3">
         <div class="container">
-            <a class="navbar-brand" href="/">SLSPERF</a>
+            <a class="navbar-brand" href=".">PACS Serverless</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -48,26 +48,6 @@
                         <a class="nav-link" href="https://pacs.eecs.yorku.ca/">About</a>
                     </li>
                 </ul>
-                <!-- <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
-                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown"
-                            id="navbarDropdownMenuLink">Your Ideas</a>
-                        <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">Ideas</a>
-                            <a href="#" class="dropdown-item">Add</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Logout</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Register</a>
-                    </li>
-                </ul> -->
             </div>
         </div>
     </nav>
@@ -77,14 +57,15 @@
             <div class="row">
                 <!-- <img src="img/01-erlang-loss.png" class="img-fluid mx-auto mb-4 mt-4" style="max-width: 50%"
                     alt="Responsive image"> -->
-                <h1>SLSPERF: Serverless Computing Performance Model</h1>
+                <div class="h1 my-4">Performance Modeling of Serverless Computing Platforms</div>
                 <p class="lead">
                     In this document, we present an interative interface for our performance model for Serverless
                     Computing Platforms.
                     You can take a look at our <a
-                        href="https://github.com/nimamahmoudi/serverless-performance-modeling">Github repository</a> for
+                        href="https://github.com/pacslab/serverless-performance-modeling">Github repository</a> for
                     the source code and other
-                    artifacts. Here are a few of the <span class="font-weight-normal">SLSPERF</span> characteristics:
+                    artifacts, or check out our publication (coming soon) for more details and 
+                    experimentations. Here are a few of the proposed model characteristics:
                 </p>
             </div>
         </div>
@@ -95,14 +76,17 @@
             <div class="row mt-5 mb-5">
                 <div class="col-lg-6 order-lg-2">
                     <div class="row mb-2">
-                        <img src="img/01-erlang-loss.png" class="img-fluid" alt="Responsive image">
+                        <img src="img/04-concurrency-diagram.png" class="img-fluid mx-auto" alt="Responsive image"
+                            style="max-width: 80%;">
                     </div>
                 </div>
                 <div class="col-lg-6 order-lg-1">
-                    <h3>Uses Erlang Loss System Underneath</h3>
+                    <div class="h3 mb-4">Public Serverless Platforms</div>
                     <p>
-                        Our performance model uses erlang loss system model for M/G/m/m queues typical
-                        in warm server pool of serverless computing platforms.
+                        Our performance model can handle most serverless computing platforms.
+                        This includes most mainstream public serverless computing platforms like AWS Lambda,
+                        Google Cloud Functions, Azure Functions, and IBM Cloud Functions.
+                        which shows the applicability of the proposed model.
                     </p>
                 </div>
             </div>
@@ -110,13 +94,52 @@
                 <div class="col-lg-6">
                     <div class="row mb-2">
                         <img src="img/03-faas-ctmc.png" class="img-fluid mx-auto" alt="Responsive image"
-                            style="max-width: 20%;">
+                            style="max-width: 90%;">
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <h3>Employs CTMC Steady-State Calculation</h3>
+                    <div class="h3 mb-4">Calculates Steady-State Characteristics</div>
                     <p>
-                        Our model uses CTMC to analyze the steady-state behaviour of the system.
+                        The proposed model solves the continuous-time Semi-Markov Process (SMP) to
+                        calculate the steady-state characteristics of the system. This creates the ability
+                        to analyze the system in the long run without the need to perform long and expensive
+                        load testing on the actual system. All you need is to do is measure the cold start and
+                        warm start performance of your function.
+                    </p>
+                </div>
+            </div>
+            <div class="row mt-5 mb-5">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="row mb-2">
+                        <img src="img/01-system-overview.png" class="img-fluid mx-auto" alt="Responsive image"
+                            style="max-width: 80%;">
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="h3 mb-4">Scale-Per-Request Serverless Platforms</div>
+                    <p>
+                        Our performance model can handle all scale-per-request serverless computing platforms
+                        which tend to perform autoscaling tasks even for a single request.
+                        Classical performance models cannot handle the dynamic environment of the modern serverless
+                        computing platform. This work is the first model that handles the complexities that
+                        arise in the latest paradigm of cloud computing services.
+                    </p>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <div class="row mb-2">
+                        <img src="img/exp08_variable_texp_user_cost_estimate.png" class="img-fluid mx-auto" alt="Responsive image"
+                            style="max-width: 90%;">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="h3 mb-4">What-If Analysis and Capacity Planning</div>
+                    <p>
+                        The proposed model can be leveraged to perform what-if analysis and capacity
+                        planning for serverless providers. This helps them calculate optimal configurations
+                        for each individual workload and provide better services with stronger
+                        Quality of Service (QoS) guaranties and better cost-performance tradeoffs.
                     </p>
                 </div>
             </div>
