@@ -1,8 +1,8 @@
 # %% Imports
 import os
 
-from pacs_util import *
-from exp_parser import *
+from pacsltk.pacs_util import *
+from pacsltk.exp_parser import *
 
 from pacsltk import perfmodel
 
