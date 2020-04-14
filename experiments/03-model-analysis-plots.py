@@ -1,7 +1,7 @@
 # %% Imports
 import os
 
-from pacs_util import *
+from pacsltk.pacs_util import *
 from pacsltk import perfmodel
 
 import numpy as np
@@ -45,27 +45,6 @@ def analyze_sls(row):
     t = timer.toc()
     props['ProcessingTime'] = t
     return pd.Series(props)
-
-
-# params = {
-#     "arrival_rate": np.arange(1, 1000, 10),
-#     "warm_service_time": 2.0,
-#     "cold_service_time": 2.2,
-#     "idle_time_before_kill": idle_mins_before_kill * 60,
-# }
-
-# df = pd.DataFrame(data=params)
-# df = pd.concat([df, df.progress_apply(analyze_sls, axis=1)], axis=1)
-
-# # %% Plot The Processing Times
-# plt.figure(figsize=(4, 2))
-# plt.plot(df['arrival_rate'], df['ProcessingTime'])
-# plt.xlabel("Arrival Rate (reqs/s)")
-# plt.ylabel("Processing Time (s)")
-# plt.tight_layout()
-# plt.grid(True)
-
-# tmp_fig_save("07_tractability_analysis")
 
 workloads = [
     (2.0, 2.2, "W1"), (0.3, 10, "W2"), (0.02, 1, "W3"), (4.211, 5.961, "W4"), (1.809, 26.681, "W5")

@@ -2,7 +2,8 @@
 import os
 
 from pacs_util import *
-from exp_parser import *
+from pacsltk.pacs_util import *
+from pacsltk.exp_parser import *
 
 import matplotlib.pyplot as plt
 
@@ -73,41 +74,6 @@ plt.gcf().subplots_adjust(left=0.15, bottom=0.2)
 plt.grid(True)
 
 tmp_fig_save("01_sample_response_time")
-
-# %% Cold Start Ratio Over Time
-
-
-def tmp_process(end_time):
-    tmp_df = df.loc[df['client_start_time_dt'] < end_time, :]
-    return parse_df(tmp_df)
-
-
-def get_cold_prob(end_time):
-    tmp_res = tmp_process(end_time)
-    return tmp_res['ss_cold_prob']
-
-
-time_idx = pd.date_range(start=df['client_start_time_dt'].min(
-), end=df['client_start_time_dt'].max(), freq='T')
-# skip 10 minutes
-time_idx = time_idx[10:]
-tmp_df = pd.DataFrame(data={'dummy': 0}, index=time_idx)
-tmp_df['time_since_start'] = time_idx - df['client_start_time_dt'].min()
-print("Calculating Cold Start Probabilities Over Time...")
-cold_prob_in_time = tmp_df.progress_apply(
-    lambda x: get_cold_prob(x.name), axis=1)
-
-plt.figure(figsize=(4, 2))
-plt.plot(tmp_df['time_since_start'], cold_prob_in_time * 1e2)
-plt.axhline(ss_cold_prob*1e2, color='r', linestyle='-.', label='Total Average')
-set_time_idx_ticks(divide_by=1e9)
-plt.xlabel("Time (hh:mm)")
-plt.ylabel("Prob. of Cold Start (%)")
-plt.tight_layout()
-plt.gcf().subplots_adjust(left=0.15, bottom=0.2)
-plt.grid(True)
-
-tmp_fig_save("02_p_cold_over_time")
 
 # %% Instance Count Over Time
 time_index = df_counts.apply(
