@@ -32,7 +32,7 @@ perfmodel.print_props(props1)
 
 which produces an output similar to the following:
 
-```output
+```
 arrival_rate: 100
 warm_service_time: 2
 cold_service_time: 25
