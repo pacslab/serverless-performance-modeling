@@ -137,7 +137,7 @@ plt.plot(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
 # plt.plot(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
 #          * 100, 'k' + exp_fmt, label='Experiment')
 plt.errorbar(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
-         * 100, yerr=exp_df['ColdStartProbabilitySE']*100, fmt='k.', label='Experiment')
+         * 100, yerr=exp_df['ColdStartProbabilitySE']*100, fmt='k--', label='Experiment')
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
