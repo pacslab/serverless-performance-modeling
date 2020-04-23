@@ -28,7 +28,7 @@ def tmp_fig_save(fig_name):
 prepare_matplotlib_cycler()
 
 # %% Process All Files
-num_of_breakdown = 7
+num_of_breakdown = 10
 idle_mins_before_kill = 10
 step_seconds = 60
 
@@ -72,7 +72,9 @@ for csv_filename in similar_csvs:
         ss_cold_probs.append(tmp_res['ss_cold_prob'])
 
     ss_cold_probs = np.array(ss_cold_probs)
-    ss_cold_prob = np.median(ss_cold_probs)
+    # ss_cold_prob = np.median(ss_cold_probs)
+    ss_cold_prob = np.mean(ss_cold_probs)
+    ss_cold_prob_se = np.sqrt(np.var(ss_cold_probs) / num_of_breakdown)
 
     # Get Model Parameters
     props, props2 = perfmodel.get_sls_warm_count_dist(
@@ -86,6 +88,7 @@ for csv_filename in similar_csvs:
         'AverageInstanceCount': [avg_instance_count, props['avg_server_count']],
         'AverageUtilization': [avg_util, props['avg_utilization']],
         'ColdStartProbability': [ss_cold_prob, props['cold_prob']],
+        'ColdStartProbabilitySE': [ss_cold_prob_se, None],
         'AverageRunningInstances': [avg_running, props['avg_running_count']],
         'AverageIdleInstances': [avg_idle, props['avg_idle_count']],
     }
@@ -116,6 +119,7 @@ exp_fmt = 'd'
 
 exp_cols = [c for c in all_df.columns if "experiment_" in c]
 exp_df = all_df.loc[:, exp_cols].T
+exp_df = exp_df.sort_values('ArrivalRate')
 
 # Model Predictions
 params = {
@@ -130,8 +134,10 @@ df = pd.concat([df, df.apply(analyze_sls, axis=1)], axis=1)
 # %% Cold Start Probability Plot
 plt.figure(figsize=(4, 2))
 plt.plot(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
-plt.plot(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
-         * 100, 'k' + exp_fmt, label='Experiment')
+# plt.plot(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
+#          * 100, 'k' + exp_fmt, label='Experiment')
+plt.errorbar(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
+         * 100, yerr=exp_df['ColdStartProbabilitySE']*100, fmt='k.', label='Experiment')
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
