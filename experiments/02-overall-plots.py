@@ -38,6 +38,8 @@ similar_csvs = ['res-01-2020-01-06_20-44-57.csv', 'res-01-2020-01-07_20-47-22.cs
                 'res-01-2020-01-10_00-54-02.csv', 'res-01-2020-01-15_23-45-39.csv'
                 ]
 
+similar_csvs += ['res-01-2020-04-23_03-51-10.csv']
+
 idx = 0
 all_df = None
 for csv_filename in similar_csvs:
