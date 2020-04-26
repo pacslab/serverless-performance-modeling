@@ -32,13 +32,16 @@ num_of_breakdown = 10
 idle_mins_before_kill = 10
 step_seconds = 60
 
-similar_csvs = ['res-01-2020-01-06_20-44-57.csv', 'res-01-2020-01-07_20-47-22.csv',
-                'res-01-2020-01-08_02-57-35.csv', 'res-01-2020-01-08_21-30-40.csv',
-                'res-01-2020-01-09_02-17-42.csv', 'res-01-2020-01-09_19-59-16.csv',
-                'res-01-2020-01-10_00-54-02.csv', 'res-01-2020-01-15_23-45-39.csv'
-                ]
+# similar_csvs = ['res-01-2020-01-06_20-44-57.csv', 'res-01-2020-01-07_20-47-22.csv',
+#                 'res-01-2020-01-08_02-57-35.csv', 'res-01-2020-01-08_21-30-40.csv',
+#                 'res-01-2020-01-09_02-17-42.csv', 'res-01-2020-01-09_19-59-16.csv',
+#                 'res-01-2020-01-10_00-54-02.csv', 'res-01-2020-01-15_23-45-39.csv'
+#                 ]
 
-similar_csvs += ['res-01-2020-04-23_03-51-10.csv', 'res-01-2020-04-24_17-53-33.csv']
+similar_csvs = ['res-01-2020-01-06_20-44-57.csv',]
+similar_csvs += [#'res-01-2020-04-23_03-51-10.csv', 
+                 'res-01-2020-04-24_17-53-33.csv',
+                 'res-01-2020-04-26_08-14-11.csv', ]
 
 idx = 0
 all_df = None
@@ -123,7 +126,7 @@ exp_df = exp_df.sort_values('ArrivalRate')
 
 # Model Predictions
 params = {
-    "arrival_rate": np.arange(exp_df.loc[:, 'ArrivalRate'].min() / 2, exp_df.loc[:, 'ArrivalRate'].max() + 1, 0.1),
+    "arrival_rate": np.arange(exp_df.loc[:, 'ArrivalRate'].min() / 2, exp_df.loc[:, 'ArrivalRate'].max() * 1.05, 0.1),
     "warm_service_time": exp_df.loc[:, 'ServiceTimeWarm'].mean() / 1000,
     "cold_service_time": exp_df.loc[:, 'ServiceTimeCold'].mean() / 1000,
     "idle_time_before_kill": idle_mins_before_kill * 60,
@@ -133,11 +136,11 @@ df = pd.concat([df, df.apply(analyze_sls, axis=1)], axis=1)
 
 # %% Cold Start Probability Plot
 plt.figure(figsize=(4, 2))
-plt.plot(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
 # plt.plot(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
 #          * 100, 'k' + exp_fmt, label='Experiment')
 plt.errorbar(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
          * 100, yerr=exp_df['ColdStartProbabilitySE']*100, fmt='k--', label='Experiment')
+plt.plot(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
