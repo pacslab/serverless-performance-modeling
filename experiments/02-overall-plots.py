@@ -181,9 +181,13 @@ tmp_fig_save("06_perf_model_utilization")
 # %% Caculate MAPE
 mod_cols = [c for c in all_df.columns if "model_" in c]
 mod_df = all_df.loc[:, mod_cols].T
+mod_df = mod_df.sort_values('ArrivalRate')
 
 print("Calculating The Mean Absolute Percentage Error...\n")
 for col_name in ['ColdStartProbability', 'AverageInstanceCount', 'AverageUtilization', 'AverageRunningInstances', 'AverageIdleInstances']:
     mod_vals = mod_df[col_name].values
     exp_vals = exp_df[col_name].values
     print(f"{col_name}: {np.mean(np.abs(mod_vals - exp_vals) / mod_vals * 100):4.2f} %")
+
+cold_start_se_avg = np.mean(exp_df['ColdStartProbabilitySE'].values / exp_df['ColdStartProbability'].values * 100)
+print(f"Average Cold Start Standard Error: {cold_start_se_avg:4.2f}%")
