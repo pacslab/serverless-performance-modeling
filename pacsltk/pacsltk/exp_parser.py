@@ -38,13 +38,13 @@ def parse_df(df):
     total_time = df['client_start_time_dt'].max() - df['client_start_time_dt'].min()
 
     # Number of minutes to ignore in the beginning
-    ignore_mins = total_time.seconds / 60 / 4
+    ignore_mins = total_time.total_seconds() / 60 / 4
     # print(f"Ignoring {ignore_mins:4.2f} minutes")
     ss_df = df.loc[df['client_start_time_dt'] > (df['client_start_time_dt'].min() + timedelta(minutes=ignore_mins)), :]
 
     # Response Time Statistics
     total_invocations = df.shape[0]
-    mean_reqs_per_min = total_invocations / (total_time.seconds / 60)
+    mean_reqs_per_min = total_invocations / (total_time.total_seconds() / 60)
     mean_reqs_per_sec = mean_reqs_per_min / 60
     mean_resp_time_client = ss_df['client_elapsed_time'].mean()
     mean_resp_time_aws = ss_df['aws_duration'].mean()

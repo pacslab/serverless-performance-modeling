@@ -12,7 +12,8 @@ register_matplotlib_converters()
 
 
 # %% Process an experiment file
-csv_filename = 'res-01-2020-01-09_19-59-16.csv'
+# csv_filename = 'res-01-2020-01-09_19-59-16.csv'
+csv_filename = 'res-01-2020-04-23_03-51-10.csv'
 idle_mins_before_kill = 10
 step_seconds = 60
 

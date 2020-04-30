@@ -4,6 +4,7 @@ services:
 jobs:
   include:
     - stage: Build and Push Docker Images
+      if: branch = master
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - cd jupyter_docker && bash build.sh && cd ..
@@ -13,6 +14,7 @@ jobs:
         provider: script
         script: cd jupyter_docker && bash push.sh && cd ..
     - stage: Build and Push API Docker Images
+      if: branch = master
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - cd web/api && bash build.sh && cd ../../
@@ -21,6 +23,7 @@ jobs:
         provider: script
         script: cd web/api && bash push.sh && cd ../../
     - stage: deploy
+      if: branch = master
       language: python
       python: 3.6
       install:

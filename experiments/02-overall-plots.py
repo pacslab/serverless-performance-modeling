@@ -28,15 +28,22 @@ def tmp_fig_save(fig_name):
 prepare_matplotlib_cycler()
 
 # %% Process All Files
-num_of_breakdown = 7
+num_of_breakdown = 10
 idle_mins_before_kill = 10
 step_seconds = 60
 
-similar_csvs = ['res-01-2020-01-06_20-44-57.csv', 'res-01-2020-01-07_20-47-22.csv',
-                'res-01-2020-01-08_02-57-35.csv', 'res-01-2020-01-08_21-30-40.csv',
-                'res-01-2020-01-09_02-17-42.csv', 'res-01-2020-01-09_19-59-16.csv',
-                'res-01-2020-01-10_00-54-02.csv', 'res-01-2020-01-15_23-45-39.csv'
-                ]
+# similar_csvs = ['res-01-2020-01-06_20-44-57.csv', 'res-01-2020-01-07_20-47-22.csv',
+#                 'res-01-2020-01-08_02-57-35.csv', 'res-01-2020-01-08_21-30-40.csv',
+#                 'res-01-2020-01-09_02-17-42.csv', 'res-01-2020-01-09_19-59-16.csv',
+#                 'res-01-2020-01-10_00-54-02.csv', 'res-01-2020-01-15_23-45-39.csv'
+#                 ]
+
+similar_csvs = ['res-01-2020-01-06_20-44-57.csv',]
+similar_csvs += [#'res-01-2020-04-23_03-51-10.csv', 
+                 'res-01-2020-04-24_17-53-33.csv',
+                 'res-01-2020-04-26_08-14-11.csv',
+                 'res-01-2020-04-28_01-05-42.csv',
+                 'res-01-2020-04-29_06-57-30.csv' ]
 
 idx = 0
 all_df = None
@@ -70,7 +77,9 @@ for csv_filename in similar_csvs:
         ss_cold_probs.append(tmp_res['ss_cold_prob'])
 
     ss_cold_probs = np.array(ss_cold_probs)
-    ss_cold_prob = np.median(ss_cold_probs)
+    # ss_cold_prob = np.median(ss_cold_probs)
+    ss_cold_prob = np.mean(ss_cold_probs)
+    ss_cold_prob_se = np.sqrt(np.var(ss_cold_probs) / num_of_breakdown)
 
     # Get Model Parameters
     props, props2 = perfmodel.get_sls_warm_count_dist(
@@ -84,6 +93,7 @@ for csv_filename in similar_csvs:
         'AverageInstanceCount': [avg_instance_count, props['avg_server_count']],
         'AverageUtilization': [avg_util, props['avg_utilization']],
         'ColdStartProbability': [ss_cold_prob, props['cold_prob']],
+        'ColdStartProbabilitySE': [ss_cold_prob_se, None],
         'AverageRunningInstances': [avg_running, props['avg_running_count']],
         'AverageIdleInstances': [avg_idle, props['avg_idle_count']],
     }
@@ -114,10 +124,11 @@ exp_fmt = 'd'
 
 exp_cols = [c for c in all_df.columns if "experiment_" in c]
 exp_df = all_df.loc[:, exp_cols].T
+exp_df = exp_df.sort_values('ArrivalRate')
 
 # Model Predictions
 params = {
-    "arrival_rate": np.arange(exp_df.loc[:, 'ArrivalRate'].min() / 2, exp_df.loc[:, 'ArrivalRate'].max() + 1, 0.1),
+    "arrival_rate": np.arange(exp_df.loc[:, 'ArrivalRate'].min() / 2, exp_df.loc[:, 'ArrivalRate'].max() * 1.05, 0.1),
     "warm_service_time": exp_df.loc[:, 'ServiceTimeWarm'].mean() / 1000,
     "cold_service_time": exp_df.loc[:, 'ServiceTimeCold'].mean() / 1000,
     "idle_time_before_kill": idle_mins_before_kill * 60,
@@ -127,9 +138,11 @@ df = pd.concat([df, df.apply(analyze_sls, axis=1)], axis=1)
 
 # %% Cold Start Probability Plot
 plt.figure(figsize=(4, 2))
+# plt.plot(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
+#          * 100, 'k' + exp_fmt, label='Experiment')
+plt.errorbar(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
+         * 100, yerr=exp_df['ColdStartProbabilitySE']*100, fmt='k--', label='Experiment')
 plt.plot(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
-plt.plot(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
-         * 100, 'k' + exp_fmt, label='Experiment')
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
@@ -169,9 +182,13 @@ tmp_fig_save("06_perf_model_utilization")
 # %% Caculate MAPE
 mod_cols = [c for c in all_df.columns if "model_" in c]
 mod_df = all_df.loc[:, mod_cols].T
+mod_df = mod_df.sort_values('ArrivalRate')
 
 print("Calculating The Mean Absolute Percentage Error...\n")
 for col_name in ['ColdStartProbability', 'AverageInstanceCount', 'AverageUtilization', 'AverageRunningInstances', 'AverageIdleInstances']:
     mod_vals = mod_df[col_name].values
     exp_vals = exp_df[col_name].values
     print(f"{col_name}: {np.mean(np.abs(mod_vals - exp_vals) / mod_vals * 100):4.2f} %")
+
+cold_start_se_avg = np.mean(exp_df['ColdStartProbabilitySE'].values / exp_df['ColdStartProbability'].values * 100)
+print(f"Average Cold Start Standard Error: {cold_start_se_avg:4.2f}%")
