@@ -124,7 +124,7 @@ exp_df = exp_df.sort_values('ArrivalRate')
 
 # Model Predictions
 params = {
-    "arrival_rate": np.arange(exp_df.loc[:, 'ArrivalRate'].min() / 2, exp_df.loc[:, 'ArrivalRate'].max() * 1.1, 0.05),
+    "arrival_rate": np.arange(exp_df.loc[:, 'ArrivalRate'].min() * 0.9, exp_df.loc[:, 'ArrivalRate'].max() * 1.1, 0.05),
     "warm_service_time": exp_df.loc[:, 'ServiceTimeWarm'].mean() / 1000,
     "cold_service_time": exp_df.loc[:, 'ServiceTimeCold'].mean() / 1000,
     "idle_time_before_kill": idle_mins_before_kill * 60,
