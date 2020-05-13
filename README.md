@@ -1,6 +1,6 @@
 ![PyPI](https://img.shields.io/pypi/v/pacsltk.svg)
 ![PyPI - Status](https://img.shields.io/pypi/status/pacsltk.svg)
-![Travis (.com)](https://img.shields.io/travis/com/nimamahmoudi/serverless-performance-modeling.svg)
+![Travis (.com)](https://img.shields.io/travis/com/pacslab/serverless-performance-modeling.svg)
 ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/pypi/pacsltk.svg)
 ![GitHub](https://img.shields.io/github/license/pacslab/serverless-performance-modeling.svg)
 
