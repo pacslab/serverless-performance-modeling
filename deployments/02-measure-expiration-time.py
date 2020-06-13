@@ -111,7 +111,7 @@ def get_csv_filename():
 def save_data():
     # Save The Results
     df_res = pd.DataFrame(data=sampled_data)
-    print(df_res.head(20))
+    print(df_res.tail(20))
     df_res.to_csv(os.path.join('results', csv_filename), index=False)
     print("CSV File Name:", csv_filename)
 
