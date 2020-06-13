@@ -1,2 +1,2 @@
-pacswg==0.1.14
+pacswg==0.1.16
 python-dotenv==0.10.4
