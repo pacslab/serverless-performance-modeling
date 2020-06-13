@@ -131,7 +131,7 @@ checkpointTimer = TimerClass()
 # send a cold start request
 ret = worker_func()
 # get instance info
-init_instance_id = ret['exist_id']
+init_instance_id = ret['inst_id']
 curr_instance_id = init_instance_id
 
 sampled_data = []
@@ -150,7 +150,7 @@ try:
         time.sleep(sample_wait_time)
         # make a new request
         ret = worker_func()
-        curr_instance_id = ret['exist_id']
+        curr_instance_id = ret['inst_id']
         # add the request to samples
         sampled_data.append({
             "elapsed_time": sample_wait_time,
