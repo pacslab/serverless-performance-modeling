@@ -43,7 +43,14 @@ similar_csvs = [ 'res-01-2020-04-24_17-53-33.csv',
                  'res-01-2020-05-12_21-35-23.csv', 
                  'res-01-2020-05-14_19-26-46.csv',
                  'res-01-2020-05-17_04-13-06.csv',
-                 'res-01-2020-05-23_20-42-58.csv', ]
+                 'res-01-2020-05-23_20-42-58.csv', 
+                 'res-01-2020-05-26_01-31-35.csv',
+                 'res-01-2020-05-28_01-57-40.csv',
+                 'res-01-2020-06-04_23-02-14.csv',
+                 'res-01-2020-06-06_22-39-19.csv',
+                 'res-01-2020-06-09_01-04-58.csv',
+                 'res-01-2020-06-10_22-20-08.csv',
+                 ]
 
 idx = 0
 all_df = None
@@ -128,7 +135,8 @@ exp_df = exp_df.sort_values('ArrivalRate')
 
 # Model Predictions
 params = {
-    "arrival_rate": np.arange(exp_df.loc[:, 'ArrivalRate'].min() * 0.9, exp_df.loc[:, 'ArrivalRate'].max() * 1.1, 0.05),
+    # "arrival_rate": np.arange(exp_df.loc[:, 'ArrivalRate'].min() * 0.9, exp_df.loc[:, 'ArrivalRate'].max() * 1.1, 0.05),
+    "arrival_rate": np.logspace(np.log10(exp_df.loc[:, 'ArrivalRate'].min() * 0.9), np.log10(exp_df.loc[:, 'ArrivalRate'].max() * 1.1), num=100),
     "warm_service_time": exp_df.loc[:, 'ServiceTimeWarm'].mean() / 1000,
     "cold_service_time": exp_df.loc[:, 'ServiceTimeCold'].mean() / 1000,
     "idle_time_before_kill": idle_mins_before_kill * 60,
@@ -140,7 +148,8 @@ df = pd.concat([df, df.apply(analyze_sls, axis=1)], axis=1)
 plt.figure(figsize=(4, 2))
 # plt.plot(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
 #          * 100, 'k' + exp_fmt, label='Experiment')
-plt.plot(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
+# plt.plot(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
+plt.semilogx(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
 
 plt.errorbar(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
          * 100, yerr=exp_df['ColdStartProbabilitySE']*100, ls='--', label='Experiment')
