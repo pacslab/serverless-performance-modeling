@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 
+from matplotlib.ticker import ScalarFormatter
+
 # %% Make Plots
 figs_folder = "figs"
 
@@ -23,6 +25,10 @@ def tmp_fig_save(fig_name):
     paths = get_fig_path(fig_name)
     plt.savefig(paths[0], dpi=300)
     plt.savefig(paths[1])
+
+
+def fix_log_x_plot():
+    plt.gca().xaxis.set_major_formatter(ScalarFormatter())
 
 
 prepare_matplotlib_cycler()
@@ -50,6 +56,8 @@ similar_csvs = [ 'res-01-2020-04-24_17-53-33.csv',
                  'res-01-2020-06-06_22-39-19.csv',
                  'res-01-2020-06-09_01-04-58.csv',
                  'res-01-2020-06-10_22-20-08.csv',
+                 'res-01-2020-06-18_23-36-37.csv',
+                 'res-01-2020-06-13_23-39-35.csv',
                  ]
 
 idx = 0
@@ -127,7 +135,8 @@ def analyze_sls(row):
     return pd.Series(props)
 
 
-exp_fmt = 'd'
+# exp_fmt = 'd'
+exp_fmt = '--'
 
 exp_cols = [c for c in all_df.columns if "experiment_" in c]
 exp_df = all_df.loc[:, exp_cols].T
@@ -146,13 +155,11 @@ df = pd.concat([df, df.apply(analyze_sls, axis=1)], axis=1)
 
 # %% Cold Start Probability Plot
 plt.figure(figsize=(4, 2))
-# plt.plot(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
-#          * 100, 'k' + exp_fmt, label='Experiment')
-# plt.plot(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
 plt.semilogx(df['arrival_rate'], df['cold_prob'] * 100, label='Model Prediction')
 
 plt.errorbar(exp_df['ArrivalRate'], exp_df['ColdStartProbability']
          * 100, yerr=exp_df['ColdStartProbabilitySE']*100, ls='--', label='Experiment')
+fix_log_x_plot()
 
 # y_est = exp_df['ColdStartProbability']*100
 # y_err = exp_df['ColdStartProbabilitySE']*100
@@ -170,8 +177,9 @@ tmp_fig_save("04_perf_model_p_cold")
 
 # %% Server Count Plot
 plt.figure(figsize=(4, 2))
-plt.plot(df['arrival_rate'], df['avg_idle_count'], label="Model Prediction")
-plt.plot(exp_df['ArrivalRate'], exp_df['AverageIdleInstances'], 'k' + exp_fmt, label="Experiment")
+plt.semilogx(df['arrival_rate'], df['avg_idle_count'], label="Model Prediction")
+plt.semilogx(exp_df['ArrivalRate'], exp_df['AverageIdleInstances'], 'k' + exp_fmt, label="Experiment")
+fix_log_x_plot()
 plt.xlabel('Arrival Rate (reqs/s)')
 plt.ylabel("Idle Instance Count")
 plt.tight_layout()
@@ -183,8 +191,9 @@ tmp_fig_save("05_perf_model_idle_count")
 
 # %% Utilization Plot
 plt.figure(figsize=(4, 2))
-plt.plot(df['arrival_rate'], df['avg_utilization'], label='Model Prediction')
-plt.plot(exp_df['ArrivalRate'], exp_df['AverageUtilization'], 'k' + exp_fmt, label="Experiment")
+plt.semilogx(df['arrival_rate'], df['avg_utilization'], label='Model Prediction')
+plt.semilogx(exp_df['ArrivalRate'], exp_df['AverageUtilization'], 'k' + exp_fmt, label="Experiment")
+fix_log_x_plot()
 plt.grid(True)
 plt.legend()
 plt.xlabel('Arrival Rate (reqs/s)')
