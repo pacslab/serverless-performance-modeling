@@ -111,6 +111,13 @@ def rt_plot_arrival_rate():
     return Response(output.getvalue(), mimetype='image/png')
 
 
+@app.route('/')
+def index():
+    return jsonify({
+        'msg': 'Welcome to serverless performance modelling!'
+    })
+    
+
 @app.route('/perfmodel/api/props', methods=['POST'])
 @cross_origin()
 def get_props():
