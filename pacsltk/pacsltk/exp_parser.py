@@ -9,9 +9,6 @@ pd.set_option('mode.chained_assignment', None)
 from datetime import datetime
 from datetime import timedelta
 
-from tqdm.auto import tqdm
-tqdm.pandas()
-
 # Import util functions
 from pacsltk.pacs_util import *
 
