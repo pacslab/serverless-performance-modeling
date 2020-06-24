@@ -13,6 +13,8 @@ jobs:
       deploy:
         provider: script
         script: cd jupyter_docker && bash push.sh && cd ..
+      on:
+        branch: production
     - stage: Build and Push API Docker Images
       if: branch = master
       script:
@@ -22,6 +24,8 @@ jobs:
       deploy:
         provider: script
         script: cd web/api && bash push.sh && cd ../../
+      on:
+        branch: production
     - stage: deploy
       if: branch = master
       language: python
@@ -45,3 +49,5 @@ jobs:
         skip_cleanup: true
         password:
           secure: OkOANTdRdkqa23vBCNWm9R115fxOfNyxNL6mdsW/qdemPI3zCdHp4f3yO0QjZhD3BBIx2kCub8Yj+cSkL9OSKCnrPbY9zBA9N5p5b/xGkItrgTyNqzoG5RI9ax8EI1NU9/LVL9cmf0OykvyM/5n1bNaBldZFFwqv/pgmtxXYs88m5GmbzUDHCExsNMt8AgTeF+PArf4gowd9JlqfmryS/XKRQBZrPHK+sooYnpifGZF42xidGNQ1b8zQoRKDTR0wZASDNcLsfb2bskJI7zqDAPDX/jBEJvqbsD2OPydynbZzCDrPZ7taBvuaRNmlFtxXfIecRveUfqVHSqiyTcKK6fLUJiyHabsdiLc8y9mPg4QAsJcukYrKUyoa15epy488oHw3rTRMOz6oXJEr9nP9oQWh9O4rH4U6X7DRrIQcjr2FdyYaIwYeIn1Q5grlUOZOgnzm7NPSWRDD7sHCpVFJbDSbpRjLZmceAVTW2q5o/KbiTrDRFIjGJdCkQGpprd4xuu9+deImyZEZ5DK5nZHYh5ePDH9cyKKSu+x1Tgpg9UzaWD7BQK6w+bJSLRZbd1QmIv3cbkb2fRUfZNSnrVUbPe0JRjBRg6eDGNRmvQ1esQpDflkhyW9SzdNbsabXTQdSQasf7dg7OqdnfTi9fGIZ7UPk3t28X39r+94eU6qMYAk=
+        on:
+          branch: production
