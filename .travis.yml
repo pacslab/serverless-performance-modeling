@@ -13,8 +13,8 @@ jobs:
       deploy:
         provider: script
         script: cd jupyter_docker && bash push.sh && cd ..
-      on:
-        branch: production
+        on:
+          branch: production
     - stage: Build and Push API Docker Images
       if: branch = master
       script:
@@ -24,8 +24,8 @@ jobs:
       deploy:
         provider: script
         script: cd web/api && bash push.sh && cd ../../
-      on:
-        branch: production
+        on:
+          branch: production
     - stage: deploy
       if: branch = master
       language: python
