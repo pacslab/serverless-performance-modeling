@@ -7,21 +7,23 @@ jobs:
       if: branch = production
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - cd jupyter_docker && bash build.sh && cd ..
-        - cd jupyter_docker && DOCKER_USER="root" bash runtest.sh && cd ..
+        - (cd jupyter_docker && bash build.sh)
+        - (cd jupyter_docker && DOCKER_USER="root" bash runtest.sh)
       # push if tests where successful
       deploy:
         provider: script
-        script: cd jupyter_docker && bash push.sh && cd ..
+        script: (cd jupyter_docker && bash push.sh)
     - stage: Build and Push API Docker Images
       if: branch = production
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - cd web/api && bash build.sh && cd ../../
+        - (cd web/api && bash build.sh)
         # run tests (later)
+        - (cd web/api && bash run-d.sh)
+        - sleep 5 && (curl -f localhost:5000 || exit 1)
       deploy:
         provider: script
-        script: cd web/api && bash push.sh && cd ../../
+        script: (cd web/api && bash push.sh)
     - stage: deploy
       if: branch = production
       language: python
