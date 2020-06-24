@@ -1,4 +1,4 @@
-var api_address_base = "https://cyb.nima-dev.com:6443/"
+var api_address_base = "https://api.nima-dev.com/serverless-performance-modeling/"
 // var api_address_base = "http://127.0.0.1:5000/"
 
 function updateArrivalRateVal(val) {
