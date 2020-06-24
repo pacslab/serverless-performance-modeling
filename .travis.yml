@@ -4,7 +4,7 @@ services:
 jobs:
   include:
     - stage: Build and Push Docker Images
-      if: branch = master
+      if: branch = production
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - cd jupyter_docker && bash build.sh && cd ..
@@ -13,10 +13,8 @@ jobs:
       deploy:
         provider: script
         script: cd jupyter_docker && bash push.sh && cd ..
-        on:
-          branch: production
     - stage: Build and Push API Docker Images
-      if: branch = master
+      if: branch = production
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - cd web/api && bash build.sh && cd ../../
@@ -24,10 +22,8 @@ jobs:
       deploy:
         provider: script
         script: cd web/api && bash push.sh && cd ../../
-        on:
-          branch: production
     - stage: deploy
-      if: branch = master
+      if: branch = production
       language: python
       python: 3.6
       install:
@@ -49,5 +45,3 @@ jobs:
         skip_cleanup: true
         password:
           secure: A7J5XL090qKyaA62GN+aCoyy8vZyaiC3gPua3v81Lk1E9CRCOXlQ30D+ez3gTLI7UsWgTsQbRSCfp1uUR5lA5XfMA+IOrj8edpDp490ig+2SixT9LMFXpMrQbx/XpKgxoR6Zwt8Bjp9vaH0pmXZVMr7l1P4OMglqcEM68/PwO+q4pKNWvZOTELq2gHFvhu2IZCKoe7klNir6Xqi3+WP6qGGZA08Jf/CNN/0twVO9SKPZ8cIaQL6Ponnf2w350lITEWltkYQmO6CIlwaEYauchxSoXW18G0MTX62gVgVH04yBezq39fVHM7iWtJfNXGNI0pEcO/JwgrbO8V7OIaTCSrFOV99BQ8f7cVoPgRKzdOIqgHHuSYtHXZfY8zWCBcQiH5wFSbqdPPsdkTfLmqUCxYH6y4U5IAp9Vb0Lg3NJex5SRCUpEkHyx1cnf3jj+IO91dmqgtxuCiqKOZAJke/lVjdvMiv2c4duT6/sUSpJ6nk9e3Zo42GxyyHW9w5Voy9E8U7KCsn/X0Nsjq8OpzQlFHVVvdBbSLx/JOtgWQyMKzSSd/Es7Q/8Xnfp6YM3jfTl8QmJMTj6YkZ5hK1k3VR5xPCKCPzInypRXQEyqCKn9e3EMV+1yLKtnii6FGnzoE2sHArGxFQCP4RxjXCsbZjbP04tb1znzZFatFbysBTUAA0=
-        on:
-          branch: production
