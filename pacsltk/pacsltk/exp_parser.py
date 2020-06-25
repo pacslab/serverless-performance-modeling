@@ -1,10 +1,6 @@
 import os
 
 import numpy as np
-import pandas as pd
-pd.pandas.set_option('display.max_columns', None)
-pd.set_option('mode.chained_assignment', None)
-
 
 from datetime import datetime
 from datetime import timedelta
@@ -13,9 +9,11 @@ from datetime import timedelta
 from pacsltk.pacs_util import *
 
 def read_csv_file(csv_file):
+    import pandas as pd
     return pd.read_csv(csv_file, index_col=0, parse_dates=True).dropna()
 
 def preprocess_df(df):
+    import pandas as pd
     epoch_millis_cols_list = ['end_time', 'start_time']
     for epoch_col in epoch_millis_cols_list:
         df[epoch_col] = df[epoch_col] / 1000
@@ -65,6 +63,7 @@ def parse_df(df):
     return get_local_vars_as_dict(list_of_vars, locals())
 
 def parse_instance_info(df, idle_mins_before_kill):
+    import pandas as pd
     u_instances = df['inst_id'].unique()
     all_instance_info = []
     for instance_id in (u_instances):
@@ -101,6 +100,7 @@ def parse_instance_info(df, idle_mins_before_kill):
 
 
 def parse_counting_info(df, ss_df, df_inst, step_seconds):
+    import pandas as pd
     time_idx = pd.date_range(start=ss_df['client_start_time_dt'].min(), end=ss_df['client_start_time_dt'].max(), freq='{}S'.format(step_seconds))
     df_counts = pd.DataFrame(data = {'count': 0}, index=time_idx)
 

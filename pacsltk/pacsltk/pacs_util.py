@@ -1,17 +1,13 @@
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from cycler import cycler
 from datetime import datetime
 from datetime import timedelta
-
-from matplotlib.ticker import FuncFormatter
 
 # For parallelizing the pandas apply
 from multiprocessing import Pool, cpu_count
 
 # Source of function: https://towardsdatascience.com/make-your-own-super-pandas-using-multiproc-1c04f41944a1
 def parallelize_dataframe(df, func, n_cores=cpu_count()):
+    import pandas as pd
     df_split = np.array_split(df, n_cores)
     pool = Pool(n_cores)
     df = pd.concat(pool.map(func, df_split))
@@ -21,6 +17,8 @@ def parallelize_dataframe(df, func, n_cores=cpu_count()):
 
 
 def fix_timedelta(mult=1e5):
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import FuncFormatter
     def timeTicks(x, pos):
         return str(timedelta(microseconds=x*mult))
         s = str(timedelta(microseconds=x*mult))
@@ -38,6 +36,8 @@ def get_local_vars_as_dict(list_of_vars, local_vars):
     return ret
 
 def prepare_matplotlib_cycler():
+    import matplotlib.pyplot as plt
+    from cycler import cycler
     SMALL_SIZE = 8
     MEDIUM_SIZE = 10
     BIGGER_SIZE = 12
