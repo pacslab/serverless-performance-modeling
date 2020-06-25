@@ -6,6 +6,7 @@ from pacsltk.exp_parser import *
 
 from pacsltk import perfmodel
 
+import pandas as pd
 import matplotlib.pyplot as plt
 
 from pandas.plotting import register_matplotlib_converters
