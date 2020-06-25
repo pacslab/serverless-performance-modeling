@@ -26,6 +26,9 @@
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Plotly for plots -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
 </head>
@@ -233,7 +236,7 @@
                 </form>
             </div>
 
-            <div class="row mb-5">
+            <div class="row">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -251,12 +254,12 @@
             <div class="row mb-5">
                 <div class="col-12">
                     <div class="row">
-                        <img id="img-pcold-arrival" src="" class="img-fluid mx-auto" alt="Pcold vs Arrival Rate">
+                        <div id="plot1" class="model-plots mx-auto">
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="row">
-                        <img id="img-rt-arrival" src="" class="img-fluid mx-auto" alt="Response Time vs Arrival Rate">
+                        <div id="plot2" class="model-plots mx-auto">
                     </div>
                 </div>
             </div>
