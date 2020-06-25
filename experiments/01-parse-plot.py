@@ -5,6 +5,7 @@ from pacs_util import *
 from pacsltk.pacs_util import *
 from pacsltk.exp_parser import *
 
+import pandas as import pd
 import matplotlib.pyplot as plt
 
 from pandas.plotting import register_matplotlib_converters
