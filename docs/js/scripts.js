@@ -1,5 +1,5 @@
-// var api_address_base = "https://api.nima-dev.com/serverless-performance-modeling/"
-var api_address_base = "http://127.0.0.1:5000/"
+var api_address_base = "https://api.nima-dev.com/serverless-performance-modeling/"
+// var api_address_base = "http://127.0.0.1:5000/"
 
 function updateArrivalRateVal(val) {
     document.getElementById('arrivalRateVal').innerHTML = val;
