@@ -94,5 +94,15 @@ MIT (c) 2020 Nima Mahmoudi & Hamzeh Khazaei
 You can find the paper with details of the proposed model in [PACS lab website](https://pacs.eecs.yorku.ca/publications/). You can use the following bibtex entry:
 
 ```bib
-Coming soon...
+@article{mahmoudi2020tccserverless,
+  author={Mahmoudi, Nima and Khazaei, Hamzeh},
+  journal={IEEE Transactions on Cloud Computing},
+  title={{Performance Modeling of Serverless Computing Platforms}},
+  year={2020},
+  volume={},
+  number={},
+  pages={1-15},
+  url_paper={https://ieeexplore.ieee.org/document/9238484},
+  url_pdf={https://pacs.eecs.yorku.ca/pubs/pdf/mahmoudi2020tccserverless.pdf}
+}
 ```
