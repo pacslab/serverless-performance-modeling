@@ -102,6 +102,7 @@ You can find the paper with details of the proposed model in [PACS lab website](
   volume={},
   number={},
   pages={1-15},
+  doi={10.1109/TCC.2020.3033373},
   url_paper={https://ieeexplore.ieee.org/document/9238484},
   url_pdf={https://pacs.eecs.yorku.ca/pubs/pdf/mahmoudi2020tccserverless.pdf}
 }
