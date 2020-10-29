@@ -3,7 +3,7 @@ import pacsltk.perfmodel as perfmodel
 import pacsltk.pacs_util as pacs_util
 import pacsltk.exp_parser as exp_parser
 
-__version__ = '0.1.13'
+__version__ = '0.2.0'
 
 __author__ = 'Nima Mahmoudi <nma@ieee.org>'
 

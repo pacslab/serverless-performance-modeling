@@ -144,9 +144,10 @@ plt.figure(figsize=(4,3))
 idx = 0
 for df in dfs:
     warm_service_time, cold_service_time, label = workloads[idx]
-    cost_estimate = df['avg_server_count'] * df['avg_resp_time']
+    cost_estimate = df['avg_server_count_total'] * df['avg_resp_time']
     cost_estimate = cost_estimate / cost_estimate.max()
-    plt.semilogx(df['idle_time_before_kill'], cost_estimate, label=label)
+    plt.loglog(df['idle_time_before_kill'], cost_estimate, label=label)
+    plt.gca().yaxis.set_major_formatter(ScalarFormatter())
     idx += 1
 
 plot_configs("Normalized Estimated User Cost")

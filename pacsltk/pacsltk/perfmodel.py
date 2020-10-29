@@ -63,6 +63,7 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
     cold_probs = [1]
     running_counts = [arrival_rate * 1 * cold_service_time]
     running_warm_counts = [0]
+    running_cold_counts = [running_counts[0]]
     resp_times = [cold_service_time]
 
 
@@ -124,6 +125,7 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
         running_counts.append(running_count)
         resp_times.append(resp_time)
         running_warm_counts.append(running_count_warm)
+        running_cold_counts.append(running_count_cold)
 
         if faster_solution:
             if block_rate > kill_rate:
@@ -136,6 +138,7 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
     running_counts = np.array(running_counts)
     resp_times = np.array(resp_times)
     running_warm_counts = np.array(running_warm_counts)
+    running_cold_counts = np.array(running_cold_counts)
 
     states_counts = len(server_counts)
     Q = np.zeros((states_counts, states_counts))
@@ -170,6 +173,8 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
     avg_server_count = np.dot(server_counts, solution)
     avg_running_count = np.dot(running_counts, solution)
     avg_running_warm_count = np.dot(running_warm_counts, solution)
+    avg_running_cold_count = np.dot(running_cold_counts, solution)
+    avg_server_count_total = avg_server_count + avg_running_cold_count # total count is average of warm + average of running cold
     avg_resp_time = np.dot(resp_times, solution)
     avg_idle_count = avg_server_count - avg_running_warm_count
     cold_prob = np.dot(cold_probs, solution)
@@ -177,8 +182,10 @@ def get_sls_warm_count_dist(arrival_rate, warm_service_time, cold_service_time, 
 
     return {
         "avg_server_count": avg_server_count,
+        "avg_server_count_total": avg_server_count_total,
         "avg_running_count": avg_running_count,
         "avg_running_warm_count": avg_running_warm_count,
+        "avg_running_cold_count": avg_running_cold_count,
         "avg_idle_count": avg_idle_count,
         "cold_prob": cold_prob,
         "avg_utilization": avg_utilization,
