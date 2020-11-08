@@ -135,3 +135,5 @@ res-*.csv
 .config
 .local
 .bash_history
+
+pythonenv*/
