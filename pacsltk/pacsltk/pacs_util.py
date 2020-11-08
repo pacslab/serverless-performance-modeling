@@ -42,6 +42,11 @@ def prepare_matplotlib_cycler():
     MEDIUM_SIZE = 10
     BIGGER_SIZE = 12
 
+    # To avoid type 3 fonts: http://phyletica.org/matplotlib-fonts/
+    from matplotlib import rcParams
+    rcParams['pdf.fonttype'] = 42
+    rcParams['ps.fonttype'] = 42
+
     font = {'family': 'serif', 'size': BIGGER_SIZE}
     plt.rc('font', **font)
 
