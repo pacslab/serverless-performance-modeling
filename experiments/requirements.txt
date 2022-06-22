@@ -1,7 +1,7 @@
 pacswg==0.1.16
 tqdm==4.41.1
 scipy==1.4.1
-numpy==1.18.1
+numpy==1.22.0
 pandas==0.25.3
 jupyter==1.0.0
 autopep8==1.4.4
